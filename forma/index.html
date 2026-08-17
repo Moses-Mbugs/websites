@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FORMA — Spatial Living, Nairobi</title>
+
+    <meta name="description" content="FORMA is a curated collection of remarkable places to live across Nairobi.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Manrope:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- THREE.JS -->
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.179.1/build/three.module.js"
+        }
+    }
+    </script>
+</head>
+
+<body>
+
+    <!-- =========================================================
+    CUSTOM POINTER
+========================================================= -->
+
+    <div class="pointer-dot" id="pointerDot"></div>
+
+    <div class="pointer-ring" id="pointerRing">
+        <span>VIEW</span>
+    </div>
+
+
+    <!-- =========================================================
+    PAGE LOADER
+========================================================= -->
+
+    <div class="loader" id="loader">
+
+        <div class="loader-content">
+
+            <div class="loader-index">
+                00—100
+            </div>
+
+            <div class="loader-title">
+                FORMA
+            </div>
+
+            <div class="loader-progress">
+                <span id="loaderProgress"></span>
+            </div>
+
+            <div class="loader-footer">
+                NAIROBI / KE
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+    NOISE
+========================================================= -->
+
+    <div class="noise"></div>
+
+
+    <!-- =========================================================
+    NAV
+========================================================= -->
+
+    <header class="navbar" id="navbar">
+
+        <a href="#home" class="logo magnetic">
+
+            <span class="logo-mark">
+                F/
+            </span>
+
+            <span>
+                FORMA
+            </span>
+
+        </a>
+
+
+        <div class="nav-coordinate">
+            01°17′S &nbsp; 36°49′E
+        </div>
+
+
+        <nav class="desktop-nav">
+
+            <a href="#collection" class="magnetic">
+                Collection
+            </a>
+
+            <a href="#places" class="magnetic">
+                Places
+            </a>
+
+            <a href="#philosophy" class="magnetic">
+                Philosophy
+            </a>
+
+            <a href="#contact" class="magnetic">
+                Contact
+            </a>
+
+        </nav>
+
+
+        <button class="menu-trigger" id="menuTrigger" aria-label="Open menu">
+            <span></span>
+            <span></span>
+        </button>
+
+    </header>
+
+
+    <!-- =========================================================
+    MOBILE MENU
+========================================================= -->
+
+    <div class="mobile-menu" id="mobileMenu">
+
+        <button class="close-menu" id="closeMenu">
+            CLOSE ×
+        </button>
+
+
+        <div class="mobile-menu-number">
+            NAV / 05
+        </div>
+
+
+        <nav>
+
+            <a href="#home">
+                <small>01</small>
+                Home
+            </a>
+
+            <a href="#collection">
+                <small>02</small>
+                Collection
+            </a>
+
+            <a href="#places">
+                <small>03</small>
+                Places
+            </a>
+
+            <a href="#philosophy">
+                <small>04</small>
+                Philosophy
+            </a>
+
+            <a href="#contact">
+                <small>05</small>
+                Contact
+            </a>
+
+        </nav>
+
+    </div>
+
+
+    <!-- =========================================================
+    HERO
+========================================================= -->
+
+    <main>
+
+        <section class="hero" id="home">
+
+            <!-- THREE.JS -->
+
+            <div class="three-wrapper">
+                <canvas id="heroCanvas"></canvas>
+            </div>
+
+
+            <!-- MASSIVE TYPOGRAPHY -->
+
+            <div class="hero-word word-live">
+                LIVE
+            </div>
+
+            <div class="hero-word word-in">
+                IN
+            </div>
+
+            <div class="hero-word word-form">
+                FORM.
+            </div>
+
+
+            <!-- LEFT META -->
+
+            <div class="hero-left">
+
+                <div class="hero-index">
+                    <span>001</span>
+                    <span>FORMA / 2026</span>
+                </div>
+
+
+                <p class="hero-intro">
+
+                    A curated index of remarkable
+                    spaces for people who see a home
+                    as more than an address.
+
+                </p>
+
+
+                <a href="#collection" class="hero-discover magnetic">
+
+                    <span class="discover-circle">
+                        ↓
+                    </span>
+
+                    Explore the collection
+
+                </a>
+
+            </div>
+
+
+            <!-- RIGHT META -->
+
+            <div class="hero-right">
+
+                <div class="availability">
+
+                    <span class="availability-dot"></span>
+
+                    37 selected residences
+                    currently available
+
+                </div>
+
+
+                <div class="hero-location">
+
+                    <span>
+                        FEATURED / 01
+                    </span>
+
+                    <h2>
+                        Oloolua<br>
+                        House
+                    </h2>
+
+                    <div class="location-meta">
+
+                        <span>Karen</span>
+
+                        <span>
+                            KES 84M
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- BOTTOM BAR -->
+
+            <div class="hero-bottom">
+
+                <span>
+                    RESIDENTIAL / ARCHITECTURAL / CURATED
+                </span>
+
+                <span>
+                    SCROLL TO ENTER
+                </span>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================================================
+    MARQUEE
+========================================================= -->
+
+        <section class="marquee-section">
+
+            <div class="marquee-track">
+
+                <span>
+                    NAIROBI
+                </span>
+
+                <span>✦</span>
+
+                <span>
+                    KAREN
+                </span>
+
+                <span>✦</span>
+
+                <span>
+                    WESTLANDS
+                </span>
+
+                <span>✦</span>
+
+                <span>
+                    KILIMANI
+                </span>
+
+                <span>✦</span>
+
+                <span>
+                    RUNDA
+                </span>
+
+                <span>✦</span>
+
+                <span>
+                    LAVINGTON
+                </span>
+
+                <span>✦</span>
+
+                <span>
+                    NAIROBI
+                </span>
+
+                <span>✦</span>
+
+                <span>
+                    KAREN
+                </span>
+
+                <span>✦</span>
+
+                <span>
+                    WESTLANDS
+                </span>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================================================
+    INTRO
+========================================================= -->
+
+        <section class="statement-section">
+
+            <div class="statement-number reveal">
+                01 /
+            </div>
+
+
+            <div class="statement-copy">
+
+                <p class="statement-small reveal">
+                    OUR POINT OF VIEW
+                </p>
+
+
+                <h2 class="reveal">
+
+                    Property is not
+
+                    <span>
+                        square footage.
+                    </span>
+
+                    It's morning light.
+
+                    <em>
+                        Distance.
+                    </em>
+
+                    Silence.
+
+                    <strong>
+                        Rhythm.
+                    </strong>
+
+                </h2>
+
+            </div>
+
+
+            <div class="statement-side reveal">
+
+                <p>
+
+                    FORMA selects residences based
+                    on architecture, location,
+                    atmosphere and quality of life.
+
+                </p>
+
+                <p>
+
+                    Less inventory.
+                    Better decisions.
+
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================================================
+    COLLECTION
+========================================================= -->
+
+        <section class="collection-section" id="collection">
+
+            <div class="collection-header">
+
+                <div>
+
+                    <span class="micro-title">
+                        02 / SELECTED RESIDENCES
+                    </span>
+
+                    <h2>
+                        The living<br>
+                        <i>index.</i>
+                    </h2>
+
+                </div>
+
+
+                <div class="collection-count">
+
+                    <strong id="collectionCount">
+                        04
+                    </strong>
+
+                    <span>
+                        SELECTED<br>
+                        SPACES
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- PROPERTY 01 -->
+
+            <article class="property-entry" data-property="01">
+
+                <div class="property-number">
+                    01
+                </div>
+
+
+                <div class="property-image hover-target">
+
+                    <img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1800&q=90"
+                        alt="Oloolua House Karen">
+
+                    <span class="image-label">
+                        EXTERIOR / 16:42
+                    </span>
+
+                </div>
+
+
+                <div class="property-copy">
+
+                    <div class="property-place">
+                        KAREN / NAIROBI
+                    </div>
+
+                    <h3>
+                        Oloolua
+                        <span>House</span>
+                    </h3>
+
+
+                    <p>
+
+                        A low-slung residence shaped
+                        around courtyards, warm timber,
+                        stone and quiet garden views.
+
+                    </p>
+
+
+                    <div class="property-spec">
+
+                        <div>
+                            <small>BED</small>
+                            <strong>05</strong>
+                        </div>
+
+                        <div>
+                            <small>BATH</small>
+                            <strong>06</strong>
+                        </div>
+
+                        <div>
+                            <small>AREA</small>
+                            <strong>6,200</strong>
+                        </div>
+
+                    </div>
+
+
+                    <div class="property-price">
+
+                        <span>ASKING</span>
+
+                        <strong>
+                            KES 84,000,000
+                        </strong>
+
+                    </div>
+
+
+                    <button class="property-arrow magnetic">
+                        ↗
+                    </button>
+
+                </div>
+
+            </article>
+
+
+            <!-- PROPERTY 02 -->
+
+            <article class="property-entry reverse" data-property="02">
+
+                <div class="property-number">
+                    02
+                </div>
+
+
+                <div class="property-image hover-target">
+
+                    <img src="https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=1800&q=90"
+                        alt="Atelier 09 apartment">
+
+                    <span class="image-label">
+                        INTERIOR / 10:18
+                    </span>
+
+                </div>
+
+
+                <div class="property-copy">
+
+                    <div class="property-place">
+                        WESTLANDS / NAIROBI
+                    </div>
+
+                    <h3>
+                        Atelier
+                        <span>09</span>
+                    </h3>
+
+
+                    <p>
+
+                        An elevated city residence
+                        balancing raw concrete,
+                        glass and panoramic skyline views.
+
+                    </p>
+
+
+                    <div class="property-spec">
+
+                        <div>
+                            <small>BED</small>
+                            <strong>03</strong>
+                        </div>
+
+                        <div>
+                            <small>BATH</small>
+                            <strong>03</strong>
+                        </div>
+
+                        <div>
+                            <small>AREA</small>
+                            <strong>2,860</strong>
+                        </div>
+
+                    </div>
+
+
+                    <div class="property-price">
+
+                        <span>ASKING</span>
+
+                        <strong>
+                            KES 42,500,000
+                        </strong>
+
+                    </div>
+
+
+                    <button class="property-arrow magnetic">
+                        ↗
+                    </button>
+
+                </div>
+
+            </article>
+
+
+            <!-- PROPERTY 03 -->
+
+            <article class="property-entry" data-property="03">
+
+                <div class="property-number">
+                    03
+                </div>
+
+
+                <div class="property-image hover-target">
+
+                    <img src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1800&q=90"
+                        alt="Courtyard residence">
+
+                    <span class="image-label">
+                        COURTYARD / 08:31
+                    </span>
+
+                </div>
+
+
+                <div class="property-copy">
+
+                    <div class="property-place">
+                        LAVINGTON / NAIROBI
+                    </div>
+
+                    <h3>
+                        Courtyard
+                        <span>No. 4</span>
+                    </h3>
+
+
+                    <p>
+
+                        Private spaces unfold around
+                        a planted central courtyard,
+                        drawing daylight deep into the home.
+
+                    </p>
+
+
+                    <div class="property-spec">
+
+                        <div>
+                            <small>BED</small>
+                            <strong>04</strong>
+                        </div>
+
+                        <div>
+                            <small>BATH</small>
+                            <strong>04</strong>
+                        </div>
+
+                        <div>
+                            <small>AREA</small>
+                            <strong>4,100</strong>
+                        </div>
+
+                    </div>
+
+
+                    <div class="property-price">
+
+                        <span>ASKING</span>
+
+                        <strong>
+                            KES 56,000,000
+                        </strong>
+
+                    </div>
+
+
+                    <button class="property-arrow magnetic">
+                        ↗
+                    </button>
+
+                </div>
+
+            </article>
+
+
+            <!-- PROPERTY 04 -->
+
+            <article class="property-entry reverse" data-property="04">
+
+                <div class="property-number">
+                    04
+                </div>
+
+
+                <div class="property-image hover-target">
+
+                    <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1800&q=90"
+                        alt="Kilimani loft">
+
+                    <span class="image-label">
+                        LIVING / 19:05
+                    </span>
+
+                </div>
+
+
+                <div class="property-copy">
+
+                    <div class="property-place">
+                        KILIMANI / NAIROBI
+                    </div>
+
+                    <h3>
+                        House
+                        <span>of Light</span>
+                    </h3>
+
+
+                    <p>
+
+                        Floor-to-ceiling glazing and
+                        quiet material tones create an
+                        atmospheric urban retreat.
+
+                    </p>
+
+
+                    <div class="property-spec">
+
+                        <div>
+                            <small>BED</small>
+                            <strong>02</strong>
+                        </div>
+
+                        <div>
+                            <small>BATH</small>
+                            <strong>02</strong>
+                        </div>
+
+                        <div>
+                            <small>AREA</small>
+                            <strong>1,920</strong>
+                        </div>
+
+                    </div>
+
+
+                    <div class="property-price">
+
+                        <span>ASKING</span>
+
+                        <strong>
+                            KES 24,500,000
+                        </strong>
+
+                    </div>
+
+
+                    <button class="property-arrow magnetic">
+                        ↗
+                    </button>
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+        <!-- =========================================================
+    COLOUR BREAK / QUOTE
+========================================================= -->
+
+        <section class="blue-section">
+
+            <div class="blue-index">
+                03 / A DIFFERENT WAY TO SEARCH
+            </div>
+
+
+            <div class="blue-copy">
+
+                <p>
+                    DON'T SEARCH FOR A HOUSE.
+                </p>
+
+                <h2>
+                    Search for the
+                    <span>life around it.</span>
+                </h2>
+
+            </div>
+
+
+            <div class="blue-orbit">
+                <span>
+                    DISCOVER
+                </span>
+            </div>
+
+        </section>
+
+
+        <!-- =========================================================
+    PLACES
+========================================================= -->
+
+        <section class="places-section" id="places">
+
+            <header class="places-header">
+
+                <span>
+                    04 / PLACES
+                </span>
+
+                <h2>
+                    Choose by
+                    <i>feeling.</i>
+                </h2>
+
+            </header>
+
+
+            <div class="place-list">
+
+
+                <a href="#collection" class="place-row" data-location="Karen">
+
+                    <span class="place-index">
+                        01
+                    </span>
+
+                    <h3>
+                        Karen
+                    </h3>
+
+                    <p>
+                        Garden / Space / Quiet
+                    </p>
+
+                    <span class="place-count">
+                        14
+                    </span>
+
+                    <span class="place-arrow">
+                        ↗
+                    </span>
+
+                </a>
+
+
+                <a href="#collection" class="place-row" data-location="Westlands">
+
+                    <span class="place-index">
+                        02
+                    </span>
+
+                    <h3>
+                        Westlands
+                    </h3>
+
+                    <p>
+                        Energy / Skyline / Culture
+                    </p>
+
+                    <span class="place-count">
+                        21
+                    </span>
+
+                    <span class="place-arrow">
+                        ↗
+                    </span>
+
+                </a>
+
+
+                <a href="#collection" class="place-row" data-location="Lavington">
+
+                    <span class="place-index">
+                        03
+                    </span>
+
+                    <h3>
+                        Lavington
+                    </h3>
+
+                    <p>
+                        Green / Central / Refined
+                    </p>
+
+                    <span class="place-count">
+                        17
+                    </span>
+
+                    <span class="place-arrow">
+                        ↗
+                    </span>
+
+                </a>
+
+
+                <a href="#collection" class="place-row" data-location="Kilimani">
+
+                    <span class="place-index">
+                        04
+                    </span>
+
+                    <h3>
+                        Kilimani
+                    </h3>
+
+                    <p>
+                        Social / Urban / Connected
+                    </p>
+
+                    <span class="place-count">
+                        32
+                    </span>
+
+                    <span class="place-arrow">
+                        ↗
+                    </span>
+
+                </a>
+
+
+                <a href="#collection" class="place-row" data-location="Runda">
+
+                    <span class="place-index">
+                        05
+                    </span>
+
+                    <h3>
+                        Runda
+                    </h3>
+
+                    <p>
+                        Privacy / Landscape / Family
+                    </p>
+
+                    <span class="place-count">
+                        09
+                    </span>
+
+                    <span class="place-arrow">
+                        ↗
+                    </span>
+
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================================================
+    PHILOSOPHY
+========================================================= -->
+
+        <section class="philosophy-section" id="philosophy">
+
+            <div class="philosophy-photo">
+
+                <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1700&q=90"
+                    alt="Architecture">
+
+                <span>
+                    MATERIAL / LIGHT / PLACE
+                </span>
+
+            </div>
+
+
+            <div class="philosophy-copy">
+
+                <span class="micro-title">
+                    05 / FORMA STANDARD
+                </span>
+
+
+                <h2>
+                    We reject
+                    <span>ordinary.</span>
+                </h2>
+
+
+                <p>
+
+                    Every residence in the FORMA
+                    collection is reviewed against
+                    the things listings usually overlook:
+                    natural light, spatial proportion,
+                    privacy, material quality,
+                    neighbourhood character and
+                    long-term livability.
+
+                </p>
+
+
+                <div class="criteria-grid">
+
+                    <div>
+                        <span>01</span>
+                        <strong>LIGHT</strong>
+                    </div>
+
+                    <div>
+                        <span>02</span>
+                        <strong>SPACE</strong>
+                    </div>
+
+                    <div>
+                        <span>03</span>
+                        <strong>LOCATION</strong>
+                    </div>
+
+                    <div>
+                        <span>04</span>
+                        <strong>MATERIAL</strong>
+                    </div>
+
+                    <div>
+                        <span>05</span>
+                        <strong>PRIVACY</strong>
+                    </div>
+
+                    <div>
+                        <span>06</span>
+                        <strong>LONGEVITY</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================================================
+    NUMBERS
+========================================================= -->
+
+        <section class="numbers-section">
+
+            <div class="number-block">
+
+                <span>SELECTED SPACES</span>
+
+                <strong class="counter" data-target="94">
+                    00
+                </strong>
+
+            </div>
+
+
+            <div class="number-block terracotta">
+
+                <span>CLIENTS PLACED</span>
+
+                <strong class="counter" data-target="318">
+                    000
+                </strong>
+
+            </div>
+
+
+            <div class="number-block acid">
+
+                <span>NEIGHBOURHOODS</span>
+
+                <strong class="counter" data-target="12">
+                    00
+                </strong>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================================================
+    CONTACT
+========================================================= -->
+
+        <section class="contact-section" id="contact">
+
+            <div class="contact-index">
+                06 / PRIVATE SEARCH
+            </div>
+
+
+            <div class="contact-main">
+
+                <h2>
+
+                    Tell us how
+
+                    <span>
+                        you want
+                    </span>
+
+                    to live.
+
+                </h2>
+
+
+                <a href="mailto:hello@forma.ke" class="contact-orbit magnetic">
+
+                    <span>
+                        START
+                        <br>
+                        A SEARCH
+                    </span>
+
+                    <strong>
+                        ↗
+                    </strong>
+
+                </a>
+
+            </div>
+
+
+            <div class="contact-bottom">
+
+                <div>
+
+                    <span>NAIROBI</span>
+
+                    <a href="tel:+254700000000">
+                        +254 700 000 000
+                    </a>
+
+                </div>
+
+
+                <div>
+
+                    <span>EMAIL</span>
+
+                    <a href="mailto:hello@forma.ke">
+                        hello@forma.ke
+                    </a>
+
+                </div>
+
+
+                <div>
+
+                    <span>SOCIAL</span>
+
+                    <a href="#">
+                        Instagram
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================================================
+    FOOTER
+========================================================= -->
+
+        <footer>
+
+            <div class="footer-logo">
+                FORMA
+            </div>
+
+
+            <div class="footer-meta">
+
+                <span>
+                    © 2026 FORMA
+                </span>
+
+                <span>
+                    NAIROBI / KENYA
+                </span>
+
+                <button id="backToTop" class="magnetic">
+                    BACK TO TOP ↑
+                </button>
+
+            </div>
+
+        </footer>
+
+    </main>
+
+
+    <script type="module" src="app.js"></script>
+
+</body>
+
+</html>

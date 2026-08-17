@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Meridian Grove — Hero</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;600&display=swap');
+
+        :root {
+            --bg: #F2F8F6;
+            --ink: #0B2B2A;
+            --ocean: #0F5C8C;
+            --ocean-dim: rgba(15, 92, 140, 0.14);
+            --emerald: #1B7A5C;
+            --aqua: #2FC2AE;
+            --mist: #DFEFEA;
+            --line: rgba(11, 43, 42, 0.12);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            background: var(--bg);
+        }
+
+        .hero {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+            color: var(--ink);
+            display: flex;
+            flex-direction: column;
+        }
+
+        #scene {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+
+        #scene canvas {
+            display: block;
+        }
+
+        .veil {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            background:
+                linear-gradient(180deg, rgba(242, 248, 246, 0.94) 0%, rgba(242, 248, 246, 0.55) 22%, rgba(242, 248, 246, 0.35) 55%, rgba(242, 248, 246, 0.97) 100%);
+            pointer-events: none;
+        }
+
+        /* NAV */
+        .nav {
+            position: relative;
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 26px 48px;
+        }
+
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 19px;
+            letter-spacing: 0.01em;
+            color: var(--ink);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--ocean), var(--emerald));
+            display: inline-block;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 34px;
+            font-size: 13px;
+            letter-spacing: 0.02em;
+        }
+
+        .nav-links a {
+            color: var(--ink);
+            text-decoration: none;
+            font-weight: 500;
+            opacity: 0.75;
+            padding-bottom: 4px;
+            border-bottom: 1px solid transparent;
+            transition: opacity 0.2s, border-color 0.2s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a:focus-visible {
+            opacity: 1;
+            border-bottom-color: var(--emerald);
+            outline: none;
+        }
+
+        .nav-cta {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            background: var(--ink);
+            color: var(--bg);
+            border: none;
+            padding: 11px 20px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        /* HERO CONTENT */
+        .hero-copy {
+            position: relative;
+            z-index: 5;
+            padding: 7vh 48px 0;
+            max-width: 760px;
+        }
+
+        .eyebrow {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--ocean);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .eyebrow::before {
+            content: '';
+            width: 28px;
+            height: 1px;
+            background: var(--ocean);
+        }
+
+        h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: clamp(38px, 5.6vw, 70px);
+            line-height: 1.04;
+            letter-spacing: -0.01em;
+            margin: 0 0 20px;
+        }
+
+        h1 .accent {
+            background: linear-gradient(100deg, var(--ocean), var(--emerald));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .sub {
+            font-size: 16.5px;
+            line-height: 1.6;
+            color: var(--ink);
+            opacity: 0.72;
+            max-width: 470px;
+        }
+
+        /* SEARCH PANEL */
+        .panel-wrap {
+            position: relative;
+            z-index: 5;
+            margin-top: auto;
+            padding: 0 48px 40px;
+        }
+
+        .panel {
+            background: rgba(255, 255, 255, 0.86);
+            backdrop-filter: blur(14px);
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            box-shadow: 0 20px 50px -18px rgba(15, 92, 140, 0.28);
+            padding: 22px 8px 0;
+        }
+
+        .panel-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            color: var(--emerald);
+            text-transform: uppercase;
+            padding: 0 22px 16px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .panel-label .coord {
+            color: var(--ink);
+            opacity: 0.45;
+        }
+
+        .fields {
+            display: grid;
+            grid-template-columns: 1.3fr 1fr 1fr 1fr auto;
+            align-items: stretch;
+        }
+
+        .field {
+            position: relative;
+            padding: 4px 24px 22px;
+            border-left: 1px solid var(--line);
+        }
+
+        .field:first-child {
+            border-left: none;
+        }
+
+        .field label {
+            display: block;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--ink);
+            opacity: 0.5;
+            margin-bottom: 10px;
+        }
+
+        .field select,
+        .field input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: var(--ink);
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            padding: 0;
+            appearance: none;
+            outline: none;
+        }
+
+        .field input::placeholder {
+            color: var(--ink);
+            opacity: 0.38;
+        }
+
+        .field::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--ocean), var(--emerald));
+            transition: width 0.25s ease;
+        }
+
+        .field:focus-within::after {
+            width: 100%;
+        }
+
+        .field.select-field::before {
+            content: '▾';
+            position: absolute;
+            right: 22px;
+            top: 34px;
+            color: var(--emerald);
+            font-size: 11px;
+            pointer-events: none;
+        }
+
+        .submit-field {
+            display: flex;
+            align-items: center;
+            padding: 4px 4px 22px 24px;
+        }
+
+        .search-btn {
+            background: linear-gradient(100deg, var(--ocean), var(--emerald));
+            color: #fff;
+            border: none;
+            height: 52px;
+            padding: 0 28px;
+            border-radius: 6px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: filter 0.2s, transform 0.2s;
+        }
+
+        .search-btn:hover,
+        .search-btn:focus-visible {
+            filter: brightness(1.08);
+            transform: translateY(-1px);
+            outline: 2px solid var(--ocean);
+            outline-offset: 2px;
+        }
+
+        .tickline {
+            display: flex;
+            justify-content: space-between;
+            padding: 14px 22px 18px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10.5px;
+            letter-spacing: 0.05em;
+            color: var(--ink);
+            opacity: 0.45;
+            border-top: 1px solid var(--line);
+            margin-top: 2px;
+        }
+
+        @media (max-width: 860px) {
+            .nav {
+                padding: 20px 20px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero-copy {
+                padding: 13vh 20px 0;
+            }
+
+            .panel-wrap {
+                padding: 0 16px 28px;
+            }
+
+            .fields {
+                grid-template-columns: 1fr;
+            }
+
+            .field {
+                border-left: none;
+                border-top: 1px solid var(--line);
+                padding: 16px 6px 18px;
+            }
+
+            .field:first-child {
+                border-top: none;
+            }
+
+            .submit-field {
+                padding: 16px 6px 18px;
+            }
+
+            .search-btn {
+                width: 100%;
+            }
+
+            .panel-label {
+                flex-direction: column;
+                gap: 6px;
+                padding: 0 6px 14px;
+            }
+
+            .tickline {
+                flex-wrap: wrap;
+                gap: 8px 18px;
+                padding: 14px 6px 4px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            .field::after,
+            .search-btn {
+                transition: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="hero" id="heroRoot">
+        <div id="scene"></div>
+        <div class="veil"></div>
+
+        <nav class="nav">
+            <div class="logo"><span class="dot"></span>MERIDIAN GROVE</div>
+            <div class="nav-links">
+                <a href="#">Listings</a>
+                <a href="#">Neighborhoods</a>
+                <a href="#">Sell</a>
+                <a href="#">Agents</a>
+            </div>
+            <button class="nav-cta">Book a viewing</button>
+        </nav>
+
+        <div class="hero-copy">
+            <div class="eyebrow">Live listings · updated hourly</div>
+            <h1>Your next address,<br><span class="accent">plotted in real time.</span></h1>
+            <p class="sub">Search 1,200+ verified homes across the coast and the valley — every pin on the map is a
+                place you can actually book a viewing for today.</p>
+        </div>
+
+        <div class="panel-wrap">
+            <div class="panel">
+                <div class="panel-label">
+                    <span>Search the map</span>
+                    <span class="coord">1,204 homes live</span>
+                </div>
+                <div class="fields">
+                    <div class="field">
+                        <label for="loc">Location</label>
+                        <input id="loc" type="text" placeholder="City, neighborhood, or zip">
+                    </div>
+                    <div class="field select-field">
+                        <label for="type">Home type</label>
+                        <select id="type">
+                            <option>Any type</option>
+                            <option>House</option>
+                            <option>Apartment</option>
+                            <option>Townhouse</option>
+                            <option>Land</option>
+                        </select>
+                    </div>
+                    <div class="field select-field">
+                        <label for="beds">Bedrooms</label>
+                        <select id="beds">
+                            <option>Any</option>
+                            <option>1+</option>
+                            <option>2+</option>
+                            <option>3+</option>
+                            <option>4+</option>
+                        </select>
+                    </div>
+                    <div class="field select-field">
+                        <label for="price">Price range</label>
+                        <select id="price">
+                            <option>Any budget</option>
+                            <option>$150K – $350K</option>
+                            <option>$350K – $600K</option>
+                            <option>$600K – $1M</option>
+                            <option>$1M+</option>
+                        </select>
+                    </div>
+                    <div class="submit-field">
+                        <button class="search-btn">Search homes</button>
+                    </div>
+                </div>
+                <div class="tickline">
+                    <span>No signup required</span>
+                    <span>New listings daily</span>
+                    <span>Verified agents only</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        (function () {
+            var container = document.getElementById('scene');
+            var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            var scene = new THREE.Scene();
+            var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+            camera.position.set(0, 3.6, 8.5);
+            camera.lookAt(0, 0, -2);
+
+            var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            container.appendChild(renderer.domElement);
+
+            // ---- Topographic wave grid (blue -> green) ----
+            var gridSize = 40;
+            var gridSpan = 22;
+            var geometry = new THREE.PlaneGeometry(gridSpan, gridSpan, gridSize, gridSize);
+            geometry.rotateX(-Math.PI / 2.35);
+
+            var colorA = new THREE.Color(0x0F5C8C); // ocean
+            var colorB = new THREE.Color(0x1B7A5C); // emerald
+            var colors = [];
+            var posAttr = geometry.attributes.position;
+            for (var i = 0; i < posAttr.count; i++) {
+                var t = (posAttr.getX(i) + gridSpan / 2) / gridSpan;
+                var c = colorA.clone().lerp(colorB, t);
+                colors.push(c.r, c.g, c.b);
+            }
+            geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+
+            var material = new THREE.MeshBasicMaterial({
+                vertexColors: true,
+                wireframe: true,
+                transparent: true,
+                opacity: 0.55
+            });
+
+            var grid = new THREE.Mesh(geometry, material);
+            grid.position.set(0, -1.4, -3);
+            scene.add(grid);
+
+            var basePositions = posAttr.array.slice();
+
+            // ---- Floating location markers ----
+            var markerGroup = new THREE.Group();
+            var markerCount = 14;
+            var markers = [];
+            for (var m = 0; m < markerCount; m++) {
+                var s = new THREE.SphereGeometry(0.045, 12, 12);
+                var col = colorA.clone().lerp(colorB, Math.random());
+                var mat = new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: 0.85 });
+                var sphere = new THREE.Mesh(s, mat);
+                var angle = Math.random() * Math.PI * 2;
+                var radius = 3 + Math.random() * 6;
+                sphere.position.set(
+                    Math.cos(angle) * radius,
+                    Math.random() * 2.4 - 0.4,
+                    -2 - Math.random() * 8
+                );
+                sphere.userData = {
+                    baseY: sphere.position.y,
+                    speed: 0.4 + Math.random() * 0.6,
+                    offset: Math.random() * Math.PI * 2
+                };
+                markers.push(sphere);
+                markerGroup.add(sphere);
+            }
+            scene.add(markerGroup);
+
+            var mouseX = 0, mouseY = 0;
+            window.addEventListener('mousemove', function (e) {
+                mouseX = (e.clientX / window.innerWidth) - 0.5;
+                mouseY = (e.clientY / window.innerHeight) - 0.5;
+            });
+
+            var clock = new THREE.Clock();
+
+            function animate() {
+                requestAnimationFrame(animate);
+                var t = clock.getElapsedTime();
+
+                if (!prefersReduced) {
+                    var posArr = posAttr.array;
+                    for (var i = 0; i < posAttr.count; i++) {
+                        var ix = i * 3, iy = i * 3 + 1, iz = i * 3 + 2;
+                        var x = basePositions[ix];
+                        var z = basePositions[iz];
+                        posArr[iy] = Math.sin(x * 0.5 + t * 0.6) * 0.35 + Math.cos(z * 0.4 + t * 0.4) * 0.35;
+                    }
+                    posAttr.needsUpdate = true;
+
+                    markers.forEach(function (mk) {
+                        mk.position.y = mk.userData.baseY + Math.sin(t * mk.userData.speed + mk.userData.offset) * 0.25;
+                    });
+
+                    grid.rotation.z = Math.sin(t * 0.05) * 0.02;
+                }
+
+                camera.position.x += (mouseX * 1.2 - camera.position.x) * 0.03;
+                camera.position.y += (3.6 - mouseY * 0.8 - camera.position.y) * 0.03;
+                camera.lookAt(0, 0, -2);
+
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            window.addEventListener('resize', function () {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        })();
+    </script>
+
+</body>
+
+</html>

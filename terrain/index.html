@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TERRAIN — Places With Character</title>
+
+    <meta name="description" content="Explore remarkable homes through architecture, place and lifestyle.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Manrope:wght@300;400;500;600;700&family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,500&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- =========================================================
+     CURSOR
+========================================================= -->
+
+    <div class="cursor" id="cursor"></div>
+
+
+    <!-- =========================================================
+     LOADER
+========================================================= -->
+
+    <div class="loader" id="loader">
+
+        <div class="loader-inner">
+
+            <div class="loader-top">
+
+                <span>
+                    TERRAIN SYSTEM
+                </span>
+
+                <span id="loaderNumber">
+                    00
+                </span>
+
+            </div>
+
+
+            <h1>
+                CALIBRATING<br>
+                TERRAIN
+            </h1>
+
+
+            <div class="loader-coordinates">
+
+                <span>
+                    LAT
+                    <strong>-1.286389</strong>
+                </span>
+
+                <span>
+                    LONG
+                    <strong>36.817223</strong>
+                </span>
+
+            </div>
+
+
+            <div class="loader-track">
+                <span id="loaderBar"></span>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+     HEADER
+========================================================= -->
+
+    <header class="navbar" id="navbar">
+
+        <a href="#home" class="brand">
+
+            <span class="brand-symbol">
+                T/
+            </span>
+
+            <span>
+                TERRAIN
+            </span>
+
+        </a>
+
+
+        <div class="nav-location">
+
+            NAIROBI
+            <span>KE</span>
+
+        </div>
+
+
+        <nav>
+
+            <a href="#residences">
+                Residences
+            </a>
+
+            <a href="#places">
+                Territory
+            </a>
+
+            <a href="#method">
+                Method
+            </a>
+
+            <a href="#contact">
+                Private Search
+            </a>
+
+        </nav>
+
+
+        <button class="mobile-toggle" id="mobileToggle">
+            MENU
+        </button>
+
+    </header>
+
+
+    <!-- =========================================================
+     MOBILE MENU
+========================================================= -->
+
+    <div class="mobile-menu" id="mobileMenu">
+
+        <button class="mobile-close" id="mobileClose">
+            CLOSE
+        </button>
+
+
+        <a href="#residences">
+            01 / Residences
+        </a>
+
+        <a href="#places">
+            02 / Territory
+        </a>
+
+        <a href="#method">
+            03 / Method
+        </a>
+
+        <a href="#contact">
+            04 / Private Search
+        </a>
+
+    </div>
+
+
+    <main>
+
+        <!-- =========================================================
+     HERO
+========================================================= -->
+
+        <section class="hero" id="home">
+
+            <canvas id="terrainCanvas"></canvas>
+
+
+            <div class="hero-grid"></div>
+
+
+            <div class="hero-meta hero-meta-left">
+
+                <span>
+                    TERRAIN INDEX
+                </span>
+
+                <span>
+                    RESIDENTIAL / 2026
+                </span>
+
+            </div>
+
+
+            <div class="hero-meta hero-meta-right">
+
+                <span>
+                    01°17′S
+                </span>
+
+                <span>
+                    36°49′E
+                </span>
+
+            </div>
+
+
+            <div class="hero-copy">
+
+                <div class="hero-small">
+                    PLACES WITH CHARACTER
+                </div>
+
+
+                <h1>
+
+                    Find the ground
+
+                    <span>
+                        you belong on.
+                    </span>
+
+                </h1>
+
+
+                <div class="hero-description">
+
+                    <p>
+
+                        A different way to discover property —
+                        through architecture, landscape,
+                        atmosphere and the life surrounding it.
+
+                    </p>
+
+
+                    <a href="#residences" class="round-link">
+                        <span>
+                            EXPLORE
+                        </span>
+
+                        ↓
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="terrain-point point-one">
+
+                <span></span>
+
+                <div>
+                    KAREN
+                    <small>1795M</small>
+                </div>
+
+            </div>
+
+
+            <div class="terrain-point point-two">
+
+                <span></span>
+
+                <div>
+                    RUNDA
+                    <small>1710M</small>
+                </div>
+
+            </div>
+
+
+            <div class="terrain-point point-three">
+
+                <span></span>
+
+                <div>
+                    WESTLANDS
+                    <small>1680M</small>
+                </div>
+
+            </div>
+
+
+            <div class="hero-bottom">
+
+                <span>
+                    37° / 21° / NAIROBI
+                </span>
+
+                <span>
+                    SCROLL TO READ THE LAND
+                </span>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================================================
+     PHILOSOPHY
+========================================================= -->
+
+        <section class="opening">
+
+            <div class="opening-index">
+                01
+            </div>
+
+
+            <div class="opening-copy">
+
+                <span class="section-label">
+                    OUR VIEW
+                </span>
+
+
+                <h2>
+
+                    A home is more
+                    than what exists
+
+                    <em>
+                        inside its walls.
+                    </em>
+
+                </h2>
+
+            </div>
+
+
+            <div class="opening-side">
+
+                <p>
+
+                    Sunlight. Elevation. Distance.
+                    Privacy. Trees. Neighbours.
+                    Noise. Movement.
+
+                </p>
+
+                <p>
+
+                    TERRAIN reads property as an
+                    environment rather than an object.
+
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================================================
+     RESIDENCES
+========================================================= -->
+
+        <section class="residences" id="residences">
+
+            <header class="section-header">
+
+                <div>
+
+                    <span class="section-label">
+                        02 / FIELD NOTES
+                    </span>
+
+                    <h2>
+                        Selected
+                        <em>sites.</em>
+                    </h2>
+
+                </div>
+
+
+                <div class="section-counter">
+                    04 / 37
+                </div>
+
+            </header>
+
+
+            <!-- =====================================================
+         PROPERTY 1
+    ====================================================== -->
+
+            <article class="site">
+
+                <div class="site-rail">
+
+                    <span>
+                        SITE
+                    </span>
+
+                    <strong>
+                        014
+                    </strong>
+
+                </div>
+
+
+                <div class="site-image" data-cursor="OPEN">
+
+                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1800&q=90"
+                        alt="House in Karen">
+
+
+                    <div class="site-image-coordinates">
+
+                        -1.3244
+                        <br>
+                        36.7073
+
+                    </div>
+
+                </div>
+
+
+                <div class="site-data">
+
+                    <span class="location">
+                        KAREN / NAIROBI
+                    </span>
+
+
+                    <h3>
+                        Oloolua
+                        <em>Ridge</em>
+                    </h3>
+
+
+                    <p>
+
+                        Stone, timber and deep overhangs
+                        arranged around mature gardens
+                        on a quiet elevated plot.
+
+                    </p>
+
+
+                    <div class="metric">
+
+                        <div>
+                            <span>
+                                SPACE
+                            </span>
+
+                            <i>
+                                <b style="width:92%"></b>
+                            </i>
+
+                            <strong>
+                                92
+                            </strong>
+                        </div>
+
+
+                        <div>
+                            <span>
+                                PRIVACY
+                            </span>
+
+                            <i>
+                                <b style="width:87%"></b>
+                            </i>
+
+                            <strong>
+                                87
+                            </strong>
+                        </div>
+
+
+                        <div>
+                            <span>
+                                LIGHT
+                            </span>
+
+                            <i>
+                                <b style="width:94%"></b>
+                            </i>
+
+                            <strong>
+                                94
+                            </strong>
+                        </div>
+
+
+                        <div>
+                            <span>
+                                GREENERY
+                            </span>
+
+                            <i>
+                                <b style="width:96%"></b>
+                            </i>
+
+                            <strong>
+                                96
+                            </strong>
+                        </div>
+
+                    </div>
+
+
+                    <div class="site-specs">
+
+                        <div>
+                            <span>BED</span>
+                            <strong>05</strong>
+                        </div>
+
+                        <div>
+                            <span>BATH</span>
+                            <strong>06</strong>
+                        </div>
+
+                        <div>
+                            <span>AREA</span>
+                            <strong>6,200</strong>
+                        </div>
+
+                    </div>
+
+
+                    <div class="site-price">
+
+                        <span>
+                            KES
+                        </span>
+
+                        <strong>
+                            84M
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- =====================================================
+         PROPERTY 2
+    ====================================================== -->
+
+            <article class="site site-reverse">
+
+                <div class="site-rail">
+
+                    <span>
+                        SITE
+                    </span>
+
+                    <strong>
+                        021
+                    </strong>
+
+                </div>
+
+
+                <div class="site-image" data-cursor="OPEN">
+
+                    <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1800&q=90"
+                        alt="Modern apartment">
+
+
+                    <div class="site-image-coordinates">
+
+                        -1.2697
+                        <br>
+                        36.8117
+
+                    </div>
+
+                </div>
+
+
+                <div class="site-data">
+
+                    <span class="location">
+                        WESTLANDS / NAIROBI
+                    </span>
+
+
+                    <h3>
+                        Skyline
+                        <em>House</em>
+                    </h3>
+
+
+                    <p>
+
+                        Elevated urban living with
+                        remarkable skyline exposure,
+                        generous terraces and excellent connectivity.
+
+                    </p>
+
+
+                    <div class="metric">
+
+                        <div>
+                            <span>
+                                SPACE
+                            </span>
+
+                            <i>
+                                <b style="width:75%"></b>
+                            </i>
+
+                            <strong>
+                                75
+                            </strong>
+                        </div>
+
+
+                        <div>
+                            <span>
+                                PRIVACY
+                            </span>
+
+                            <i>
+                                <b style="width:74%"></b>
+                            </i>
+
+                            <strong>
+                                74
+                            </strong>
+                        </div>
+
+
+                        <div>
+                            <span>
+                                LIGHT
+                            </span>
+
+                            <i>
+                                <b style="width:97%"></b>
+                            </i>
+
+                            <strong>
+                                97
+                            </strong>
+                        </div>
+
+
+                        <div>
+                            <span>
+                                CONNECT
+                            </span>
+
+                            <i>
+                                <b style="width:98%"></b>
+                            </i>
+
+                            <strong>
+                                98
+                            </strong>
+                        </div>
+
+                    </div>
+
+
+                    <div class="site-specs">
+
+                        <div>
+                            <span>BED</span>
+                            <strong>03</strong>
+                        </div>
+
+                        <div>
+                            <span>BATH</span>
+                            <strong>03</strong>
+                        </div>
+
+                        <div>
+                            <span>AREA</span>
+                            <strong>2,740</strong>
+                        </div>
+
+                    </div>
+
+
+                    <div class="site-price">
+
+                        <span>
+                            KES
+                        </span>
+
+                        <strong>
+                            46M
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+        <!-- =========================================================
+     DAY TIMELINE
+========================================================= -->
+
+        <section class="day-section">
+
+            <header>
+
+                <span class="section-label">
+                    03 / A DAY HERE
+                </span>
+
+
+                <h2>
+
+                    Follow the
+
+                    <em>
+                        light.
+                    </em>
+
+                </h2>
+
+            </header>
+
+
+            <div class="day-stage" id="dayStage">
+
+                <div class="day-image" id="dayImage"></div>
+
+
+                <div class="day-overlay"></div>
+
+
+                <div class="day-clock">
+
+                    <span id="dayTime">
+                        06:42
+                    </span>
+
+                    <small id="dayLabel">
+                        MORNING LIGHT
+                    </small>
+
+                </div>
+
+
+                <div class="day-copy">
+
+                    <p id="dayDescription">
+
+                        Eastern light reaches the bedroom
+                        before the city wakes.
+
+                    </p>
+
+                </div>
+
+
+                <div class="day-controls">
+
+                    <button class="day-option active" data-index="0">
+                        <span>06:42</span>
+                        Morning
+                    </button>
+
+
+                    <button class="day-option" data-index="1">
+                        <span>11:20</span>
+                        Courtyard
+                    </button>
+
+
+                    <button class="day-option" data-index="2">
+                        <span>17:46</span>
+                        Golden hour
+                    </button>
+
+
+                    <button class="day-option" data-index="3">
+                        <span>21:13</span>
+                        Quiet
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================================================
+     TERRITORY
+========================================================= -->
+
+        <section class="places" id="places">
+
+            <header>
+
+                <span class="section-label">
+                    04 / TERRITORY
+                </span>
+
+                <h2>
+                    Read the
+                    <em>neighbourhood.</em>
+                </h2>
+
+            </header>
+
+
+            <div class="territory-layout">
+
+                <div class="territory-map">
+
+                    <div class="map-rings"></div>
+
+
+                    <button class="map-node node-karen active" data-place="karen">
+                        <span></span>
+                        KAREN
+                    </button>
+
+
+                    <button class="map-node node-westlands" data-place="westlands">
+                        <span></span>
+                        WESTLANDS
+                    </button>
+
+
+                    <button class="map-node node-kilimani" data-place="kilimani">
+                        <span></span>
+                        KILIMANI
+                    </button>
+
+
+                    <button class="map-node node-runda" data-place="runda">
+                        <span></span>
+                        RUNDA
+                    </button>
+
+                </div>
+
+
+                <div class="territory-info">
+
+                    <span class="territory-id" id="territoryId">
+                        TERRITORY / 01
+                    </span>
+
+
+                    <h3 id="territoryName">
+                        Karen
+                    </h3>
+
+
+                    <p id="territoryDescription">
+
+                        Mature gardens, generous plots
+                        and low-density residential living.
+
+                    </p>
+
+
+                    <div class="territory-scores">
+
+                        <div>
+                            <span>
+                                QUIET
+                            </span>
+
+                            <strong id="quietScore">
+                                94
+                            </strong>
+                        </div>
+
+
+                        <div>
+                            <span>
+                                GREEN SPACE
+                            </span>
+
+                            <strong id="greenScore">
+                                91
+                            </strong>
+                        </div>
+
+
+                        <div>
+                            <span>
+                                ACCESS
+                            </span>
+
+                            <strong id="accessScore">
+                                62
+                            </strong>
+                        </div>
+
+
+                        <div>
+                            <span>
+                                FAMILY
+                            </span>
+
+                            <strong id="familyScore">
+                                96
+                            </strong>
+                        </div>
+
+                    </div>
+
+
+                    <a href="#residences">
+
+                        View selected homes
+
+                        <span>↗</span>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================================================
+     METHOD
+========================================================= -->
+
+        <section class="method" id="method">
+
+            <div class="method-left">
+
+                <span class="section-label">
+                    05 / OUR METHOD
+                </span>
+
+
+                <h2>
+
+                    What most listings
+
+                    <em>
+                        don't measure.
+                    </em>
+
+                </h2>
+
+            </div>
+
+
+            <div class="method-grid">
+
+                <article>
+
+                    <span>
+                        01
+                    </span>
+
+                    <h3>
+                        Light
+                    </h3>
+
+                    <p>
+
+                        Direction, quality and duration
+                        of natural daylight.
+
+                    </p>
+
+                </article>
+
+
+                <article>
+
+                    <span>
+                        02
+                    </span>
+
+                    <h3>
+                        Privacy
+                    </h3>
+
+                    <p>
+
+                        Relationship between neighbours,
+                        views and outdoor spaces.
+
+                    </p>
+
+                </article>
+
+
+                <article>
+
+                    <span>
+                        03
+                    </span>
+
+                    <h3>
+                        Movement
+                    </h3>
+
+                    <p>
+
+                        How naturally you move through
+                        the spaces of the home.
+
+                    </p>
+
+                </article>
+
+
+                <article>
+
+                    <span>
+                        04
+                    </span>
+
+                    <h3>
+                        Context
+                    </h3>
+
+                    <p>
+
+                        The character and future of
+                        the surrounding neighbourhood.
+
+                    </p>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================================================
+     CTA
+========================================================= -->
+
+        <section class="contact" id="contact">
+
+            <div class="contact-top">
+
+                <span>
+                    06 / PRIVATE SEARCH
+                </span>
+
+                <span>
+                    NAIROBI / KE
+                </span>
+
+            </div>
+
+
+            <div class="contact-title">
+
+                <h2>
+
+                    Tell us where
+
+                    <em>
+                        life should happen.
+                    </em>
+
+                </h2>
+
+
+                <a href="mailto:hello@terrain.ke">
+
+                    BEGIN
+                    <br>
+                    SEARCH
+
+                    <span>
+                        ↗
+                    </span>
+
+                </a>
+
+            </div>
+
+
+            <footer>
+
+                <strong>
+                    TERRAIN
+                </strong>
+
+
+                <div>
+
+                    <a href="#">
+                        Instagram
+                    </a>
+
+                    <a href="mailto:hello@terrain.ke">
+                        hello@terrain.ke
+                    </a>
+
+                    <span>
+                        © 2026
+                    </span>
+
+                </div>
+
+            </footer>
+
+        </section>
+
+    </main>
+
+
+    <script src="app.js"></script>
+
+</body>
+
+</html>

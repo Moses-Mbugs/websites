@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compass — Find Your Neighborhood, Not Just a House</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,500;0,600;0,700;1,500&family=Work+Sans:wght@400;500;600;700&family=Courier+Prime:wght@400;700&display=swap');
+
+  :root{
+    --ink:#1F1B2E;
+    --ink-deeper:#17132200;
+    --panel: rgba(241,234,224,0.045);
+    --parchment:#F1EAE0;
+    --muted: rgba(241,234,224,0.6);
+    --gold:#C9A227;
+    --gold-soft: rgba(201,162,39,0.16);
+    --burgundy:#A24444;
+    --line: rgba(241,234,224,0.14);
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--parchment);
+    font-family:'Work Sans', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{ color:inherit; }
+  .wrap{ max-width:1240px; margin:0 auto; padding:0 48px; }
+
+  h1,h2,h3{ font-family:'Spectral', serif; margin:0; }
+  .mono{ font-family:'Courier Prime', monospace; }
+  .eyebrow{
+    font-family:'Courier Prime', monospace;
+    font-size:12px; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--gold);
+    display:flex; align-items:center; gap:12px;
+  }
+  .eyebrow::before{ content:''; width:26px; height:1px; background:var(--gold); }
+
+  /* ---------- NAV ---------- */
+  .nav{
+    position:fixed; top:0; left:0; right:0; z-index:60;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:24px 48px;
+    transition:background 0.3s ease, padding 0.3s ease, box-shadow 0.3s ease;
+  }
+  .nav.scrolled{
+    background:rgba(31,27,46,0.88);
+    backdrop-filter:blur(10px);
+    box-shadow:0 1px 0 var(--line);
+    padding:16px 48px;
+  }
+  .logo{
+    font-family:'Spectral', serif; font-weight:700; font-style:italic; font-size:21px;
+    display:flex; align-items:center; gap:9px;
+  }
+  .logo .mark{
+    width:8px; height:8px; border:1px solid var(--gold); transform:rotate(45deg); display:inline-block;
+  }
+  .nav-links{ display:flex; gap:32px; font-size:13.5px; font-weight:500; }
+  .nav-links a{ text-decoration:none; opacity:0.7; transition:opacity 0.2s; }
+  .nav-links a:hover, .nav-links a:focus-visible{ opacity:1; outline:none; }
+  .nav-cta{
+    font-family:'Courier Prime', monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase;
+    background:var(--gold); color:var(--ink); border:none; padding:11px 20px; border-radius:2px; cursor:pointer;
+  }
+  .nav-cta:hover{ background:var(--parchment); }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    min-height:100vh;
+    display:flex; align-items:center;
+    padding:110px 0 48px;
+    overflow:hidden;
+  }
+  .hero-vignette{
+    position:absolute; inset:0; z-index:0; pointer-events:none;
+    background: radial-gradient(circle at 72% 45%, rgba(201,162,39,0.10), transparent 55%);
+  }
+  .hero .wrap{
+    display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center;
+    position:relative; z-index:2; width:100%;
+  }
+  .hero h1{
+    font-size:clamp(36px, 4.4vw, 60px);
+    line-height:1.08; font-weight:600; margin:20px 0 22px;
+  }
+  .hero h1 em{ font-style:italic; color:var(--gold); font-weight:500; }
+  .hero .sub{ font-size:16px; line-height:1.7; color:var(--muted); max-width:440px; margin-bottom:30px; }
+  .hero-ctas{ display:flex; gap:14px; flex-wrap:wrap; }
+  .btn{
+    font-family:'Courier Prime', monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase;
+    padding:15px 26px; border-radius:2px; cursor:pointer; border:1px solid transparent;
+    transition:transform 0.2s ease, filter 0.2s ease, background 0.2s ease;
+  }
+  .btn:hover{ transform:translateY(-2px); }
+  .btn-solid{ background:var(--gold); color:var(--ink); }
+  .btn-solid:hover{ filter:brightness(1.1); }
+  .btn-outline{ background:transparent; border-color:var(--parchment); color:var(--parchment); }
+  .btn-outline:hover{ background:var(--parchment); color:var(--ink); }
+
+  .hero-scene{ position:relative; height:min(60vh, 560px); }
+  #radar-canvas{ position:absolute; inset:0; }
+  .scene-caption{
+    position:absolute; bottom:0; left:0; right:0; text-align:center;
+    font-family:'Courier Prime', monospace; font-size:11px; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--muted);
+  }
+
+  /* ---------- reveal ---------- */
+  .reveal{ opacity:0; transform:translateY(26px); transition:opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  /* ---------- SHARED SECTION ---------- */
+  section{ padding:100px 0; border-top:1px solid var(--line); }
+  .hero{ border-top:none; }
+  .section-head{ display:flex; justify-content:space-between; align-items:flex-end; gap:40px; flex-wrap:wrap; margin-bottom:48px; }
+  .section-head h2{ font-size:clamp(26px,3vw,40px); font-weight:600; margin-top:14px; max-width:520px; line-height:1.15; }
+  .section-head p{ max-width:320px; font-size:14.5px; color:var(--muted); line-height:1.6; }
+
+  /* ---------- COMPASS SLIDERS ---------- */
+  .compass-grid{ display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:start; }
+  .slider-row{ margin-bottom:26px; }
+  .slider-row label{
+    display:flex; justify-content:space-between;
+    font-family:'Courier Prime', monospace; font-size:12.5px; letter-spacing:0.03em;
+    text-transform:uppercase; margin-bottom:10px; color:var(--muted);
+  }
+  .slider-row label span.val{ color:var(--gold); }
+  input[type="range"]{
+    -webkit-appearance:none; width:100%; height:2px; background:var(--line); border-radius:2px; outline:none;
+  }
+  input[type="range"]::-webkit-slider-thumb{
+    -webkit-appearance:none; width:16px; height:16px; border-radius:50%;
+    background:var(--gold); cursor:pointer; border:2px solid var(--ink);
+    box-shadow:0 0 0 1px var(--gold);
+  }
+  input[type="range"]::-moz-range-thumb{
+    width:16px; height:16px; border-radius:50%; background:var(--gold); cursor:pointer; border:2px solid var(--ink);
+  }
+
+  .match-list{ display:flex; flex-direction:column; gap:12px; }
+  .match-card{
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+    padding:16px 18px; border:1px solid var(--line); border-radius:5px; background:var(--panel);
+    transition:border-color 0.3s ease, background 0.3s ease;
+  }
+  .match-card.best{ border-color:var(--gold); background:var(--gold-soft); }
+  .match-name{ font-family:'Spectral', serif; font-size:17px; font-weight:600; }
+  .match-tag{ font-family:'Courier Prime', monospace; font-size:11px; color:var(--muted); margin-top:4px; }
+  .match-score{ font-family:'Spectral', serif; font-size:22px; font-weight:700; color:var(--gold); text-align:right; }
+  .match-score span{ display:block; font-family:'Courier Prime', monospace; font-size:9.5px; color:var(--muted); text-transform:uppercase; letter-spacing:0.06em; }
+
+  /* ---------- HOW IT WORKS ---------- */
+  .steps{ display:grid; grid-template-columns:repeat(3,1fr); gap:0; }
+  .step{ padding:0 30px 0 0; border-right:1px solid var(--line); }
+  .step:last-child{ border-right:none; padding-right:0; }
+  .step:not(:first-child){ padding-left:30px; }
+  .step-num{ font-family:'Courier Prime', monospace; font-size:12px; color:var(--gold); letter-spacing:0.08em; }
+  .step h3{ font-size:21px; font-weight:600; margin:16px 0 12px; }
+  .step p{ font-size:14.5px; color:var(--muted); line-height:1.65; }
+
+  /* ---------- SPOTLIGHT ---------- */
+  .spotlight .wrap{ display:grid; grid-template-columns:1fr 1.1fr; gap:56px; align-items:center; }
+  .spot-stats{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin:26px 0 26px; border-top:1px solid var(--line); padding-top:20px; }
+  .spot-stats div b{ display:block; font-family:'Spectral', serif; font-size:22px; font-weight:700; color:var(--gold); }
+  .spot-stats div span{ font-family:'Courier Prime', monospace; font-size:10px; letter-spacing:0.05em; text-transform:uppercase; color:var(--muted); }
+  .quote{
+    font-family:'Spectral', serif; font-style:italic; font-size:17px; line-height:1.65;
+    border-left:2px solid var(--burgundy); padding-left:20px; color:var(--parchment); opacity:0.9;
+  }
+  .quote cite{ display:block; font-style:normal; font-family:'Courier Prime', monospace; font-size:11px; margin-top:12px; color:var(--muted); text-transform:uppercase; letter-spacing:0.05em; }
+  .spot-img{ border:1px solid var(--line); border-radius:4px; aspect-ratio:4/5; overflow:hidden; }
+  .spot-img img{ width:100%; height:100%; object-fit:cover; filter:saturate(0.85) contrast(1.05); }
+
+  /* ---------- TRUST ---------- */
+  .trust{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:20px; }
+  .trust span{ font-family:'Spectral', serif; font-style:italic; font-size:18px; opacity:0.4; }
+
+  /* ---------- CTA ---------- */
+  .cta-banner{
+    background: linear-gradient(120deg, rgba(201,162,39,0.12), rgba(162,68,68,0.12));
+    border:1px solid var(--line);
+    border-radius:6px; padding:56px; display:flex; justify-content:space-between; align-items:center; gap:36px; flex-wrap:wrap;
+  }
+  .cta-banner h2{ font-size:clamp(22px,2.8vw,32px); font-weight:600; max-width:420px; line-height:1.2; }
+  .cta-form{ display:flex; gap:10px; flex-wrap:wrap; }
+  .cta-form input{
+    background:rgba(241,234,224,0.05); border:1px solid var(--line); color:var(--parchment);
+    padding:14px 18px; border-radius:3px; font-family:'Work Sans', sans-serif; font-size:14px; min-width:220px; outline:none;
+  }
+  .cta-form input::placeholder{ color:var(--muted); }
+  .cta-form input:focus{ border-color:var(--gold); }
+  .cta-form button{
+    background:var(--gold); color:var(--ink); border:none; padding:0 24px; border-radius:3px; cursor:pointer;
+    font-family:'Courier Prime', monospace; font-size:12px; letter-spacing:0.05em; text-transform:uppercase; font-weight:700;
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer{ padding:60px 0 36px; }
+  .footer-top{ display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:40px; padding-bottom:44px; border-bottom:1px solid var(--line); margin-bottom:26px; }
+  .footer-brand .logo{ margin-bottom:16px; }
+  .footer-brand p{ font-size:13.5px; color:var(--muted); max-width:260px; line-height:1.6; }
+  .footer-col h4{ font-family:'Courier Prime', monospace; font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); margin-bottom:16px; }
+  .footer-col a{ display:block; text-decoration:none; font-size:14px; margin-bottom:11px; opacity:0.8; }
+  .footer-col a:hover{ opacity:1; color:var(--gold); }
+  .footer-bottom{ display:flex; justify-content:space-between; font-size:12px; color:var(--muted); font-family:'Courier Prime', monospace; flex-wrap:wrap; gap:10px; }
+
+  @media (max-width: 980px){
+    .wrap{ padding:0 22px; }
+    .nav{ padding:18px 22px; }
+    .nav-links{ display:none; }
+    .hero .wrap{ grid-template-columns:1fr; }
+    .hero-scene{ height:340px; order:-1; }
+    .compass-grid{ grid-template-columns:1fr; gap:36px; }
+    .steps{ grid-template-columns:1fr; }
+    .step{ border-right:none; padding-right:0 !important; padding-left:0 !important; border-bottom:1px solid var(--line); padding-bottom:26px; margin-bottom:10px; }
+    .spotlight .wrap{ grid-template-columns:1fr; gap:32px; }
+    .footer-top{ grid-template-columns:1fr 1fr; }
+    .cta-banner{ padding:34px 26px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    .reveal{ transition:none; opacity:1; transform:none; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav" id="siteNav">
+  <div class="logo"><span class="mark"></span>Compass</div>
+  <div class="nav-links">
+    <a href="#compass">Set your compass</a>
+    <a href="#how">How it works</a>
+    <a href="#spotlight">Featured area</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <button class="nav-cta">Start matching</button>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero-vignette"></div>
+  <div class="wrap">
+    <div class="hero-copy">
+      <div class="eyebrow">Lifestyle-matched home search</div>
+      <h1>Stop scrolling listings.<br>Start with <em>how you<br>want to live.</em></h1>
+      <p class="sub">Compass reads six dimensions of daily life — walkability, nightlife, quiet, schools, green space, transit — and points you at the neighborhoods that actually fit, before you look at a single house.</p>
+      <div class="hero-ctas">
+        <button class="btn btn-solid" onclick="document.getElementById('compass').scrollIntoView({behavior:'smooth'})">Set your compass</button>
+        <button class="btn btn-outline">See all neighborhoods</button>
+      </div>
+    </div>
+    <div class="hero-scene">
+      <canvas id="radar-canvas"></canvas>
+      <div class="scene-caption">Your current lifestyle profile</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COMPASS / SLIDERS + MATCHES ============ -->
+<section id="compass">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <div class="eyebrow">Six dimensions, one shape</div>
+        <h2>Adjust the dials. Watch the shape — and the shortlist — change.</h2>
+      </div>
+      <p>Every neighborhood in our index has the same six-point profile as you. We match on shape, not just zip code.</p>
+    </div>
+
+    <div class="compass-grid reveal">
+      <div class="sliders" id="sliderContainer"></div>
+      <div>
+        <div class="eyebrow" style="margin-bottom:18px;">Closest matches</div>
+        <div class="match-list" id="matchList"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section id="how">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <div class="eyebrow">The method</div>
+        <h2>Three steps from dial to doorstep.</h2>
+      </div>
+    </div>
+    <div class="steps reveal">
+      <div class="step">
+        <div class="step-num">01 / Profile</div>
+        <h3>Set your six dials</h3>
+        <p>Takes about ninety seconds. No account needed to see your first shortlist.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02 / Match</div>
+        <h3>See the shape overlap</h3>
+        <p>We score every neighborhood in your radius by how closely its profile overlaps yours.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03 / Tour</div>
+        <h3>Browse listings there</h3>
+        <p>Only once a neighborhood fits do we show you what's actually for sale inside it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SPOTLIGHT ============ -->
+<section class="spotlight" id="spotlight">
+  <div class="wrap">
+    <div class="spot-img reveal">
+      <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1000&auto=format&fit=crop" alt="Cedar Hollow neighborhood street">
+    </div>
+    <div class="reveal">
+      <div class="eyebrow">Featured profile · high quiet, high schools</div>
+      <h2>Cedar Hollow</h2>
+      <div class="spot-stats">
+        <div><b>92</b><span>Quiet score</span></div>
+        <div><b>88</b><span>School score</span></div>
+        <div><b>85</b><span>Green space</span></div>
+      </div>
+      <div class="quote">
+        We matched at 94%. I didn't know I wanted a cul-de-sac with a school walk under seven minutes until the shape told me.
+        <cite>— Compass user, moved in 2025</cite>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TRUST ============ -->
+<section>
+  <div class="wrap">
+    <div class="trust reveal">
+      <span>Featured in Metro Living</span>
+      <span>The Relocation Journal</span>
+      <span>Home & Habit Weekly</span>
+      <span>City Data Quarterly</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section id="contact">
+  <div class="wrap">
+    <div class="cta-banner reveal">
+      <h2>Save your compass profile and get new matches as neighborhoods shift.</h2>
+      <div class="cta-form">
+        <input type="email" placeholder="you@email.com">
+        <button>Save my profile</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="logo"><span class="mark"></span>Compass</div>
+        <p>A lifestyle-matched way to find where to live, before you find what to buy.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Product</h4>
+        <a href="#compass">Set your compass</a>
+        <a href="#how">How it works</a>
+        <a href="#spotlight">Featured areas</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#">About</a>
+        <a href="#">Methodology</a>
+        <a href="#">Careers</a>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <a href="#">Data sources</a>
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Compass Living</span>
+      <span>214 neighborhoods indexed</span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* ---------------- NAV + REVEAL ---------------- */
+var nav = document.getElementById('siteNav');
+window.addEventListener('scroll', function(){ nav.classList.toggle('scrolled', window.scrollY > 40); });
+
+var revealEls = document.querySelectorAll('.reveal');
+if ('IntersectionObserver' in window){
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if (entry.isIntersecting){ entry.target.classList.add('in'); io.unobserve(entry.target); }
+    });
+  }, { threshold: 0.12 });
+  revealEls.forEach(function(el){ io.observe(el); });
+} else {
+  revealEls.forEach(function(el){ el.classList.add('in'); });
+}
+
+/* ---------------- DATA ---------------- */
+var DIMS = ['Walkability', 'Nightlife', 'Quiet', 'Schools', 'Green space', 'Transit'];
+var NEIGHBORHOODS = [
+  { name:'Riverside Commons', tag:'Walkable · family-friendly', profile:[82,40,55,78,70,65] },
+  { name:'Old Mill District', tag:'Nightlife · dense · social', profile:[60,85,30,50,40,80] },
+  { name:'Cedar Hollow', tag:'Quiet · top schools', profile:[35,15,92,88,85,25] },
+  { name:'Harbor Point', tag:'Transit-first · walkable', profile:[90,70,45,60,55,90] },
+  { name:'Maple Ridge', tag:'Quiet · green · schools', profile:[50,25,80,95,75,40] }
+];
+
+var userProfile = [70, 50, 60, 70, 65, 60];
+
+/* ---------------- SLIDERS ---------------- */
+var sliderContainer = document.getElementById('sliderContainer');
+DIMS.forEach(function(dim, i){
+  var row = document.createElement('div');
+  row.className = 'slider-row';
+  row.innerHTML =
+    '<label>' + dim + ' <span class="val" id="val-' + i + '">' + userProfile[i] + '</span></label>' +
+    '<input type="range" min="0" max="100" value="' + userProfile[i] + '" data-dim="' + i + '">';
+  sliderContainer.appendChild(row);
+});
+
+sliderContainer.querySelectorAll('input[type="range"]').forEach(function(input){
+  input.addEventListener('input', function(){
+    var i = parseInt(input.dataset.dim, 10);
+    userProfile[i] = parseInt(input.value, 10);
+    document.getElementById('val-' + i).textContent = userProfile[i];
+    updateRadar(userProfile);
+    updateMatches();
+  });
+});
+
+/* ---------------- MATCH SCORING ---------------- */
+function distance(a, b){
+  var sum = 0;
+  for (var i = 0; i < a.length; i++){ sum += Math.pow(a[i] - b[i], 2); }
+  return Math.sqrt(sum);
+}
+var maxDist = Math.sqrt(6 * Math.pow(100, 2));
+
+var matchListEl = document.getElementById('matchList');
+function updateMatches(){
+  var scored = NEIGHBORHOODS.map(function(n){
+    var d = distance(userProfile, n.profile);
+    var score = Math.max(0, Math.round(100 - (d / maxDist) * 100));
+    return { n:n, score:score };
+  }).sort(function(a,b){ return b.score - a.score; });
+
+  matchListEl.innerHTML = '';
+  scored.forEach(function(item, idx){
+    var card = document.createElement('div');
+    card.className = 'match-card' + (idx === 0 ? ' best' : '');
+    card.innerHTML =
+      '<div><div class="match-name">' + item.n.name + '</div><div class="match-tag">' + item.n.tag + (idx === 0 ? ' · Best match' : '') + '</div></div>' +
+      '<div class="match-score">' + item.score + '%<span>Fit</span></div>';
+    matchListEl.appendChild(card);
+  });
+}
+updateMatches();
+
+/* ---------------- THREE.JS RADAR ---------------- */
+var updateRadar; // exposed for slider handler
+
+(function(){
+  var canvas = document.getElementById('radar-canvas');
+  var stage = canvas.parentElement;
+  var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var scene = new THREE.Scene();
+  var camera = new THREE.PerspectiveCamera(42, stage.clientWidth / stage.clientHeight, 0.1, 100);
+  camera.position.set(0, 3.4, 5.6);
+  camera.lookAt(0, 0, 0);
+
+  var renderer = new THREE.WebGLRenderer({ canvas:canvas, antialias:true, alpha:true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(stage.clientWidth, stage.clientHeight);
+
+  var tiltGroup = new THREE.Group();
+  tiltGroup.rotation.x = -Math.PI / 2.6;
+  scene.add(tiltGroup);
+
+  var maxR = 2.1;
+  var axisCount = DIMS.length;
+
+  function axisPoint(i, value){
+    var angle = (i / axisCount) * Math.PI * 2 - Math.PI / 2;
+    var r = (value / 100) * maxR;
+    return new THREE.Vector3(Math.cos(angle) * r, Math.sin(angle) * r, 0);
+  }
+
+  /* background rings */
+  [0.33, 0.66, 1].forEach(function(f){
+    var ringPts = [];
+    for (var i = 0; i <= axisCount; i++){
+      ringPts.push(axisPoint(i % axisCount, f * 100));
+    }
+    var ringGeo = new THREE.BufferGeometry().setFromPoints(ringPts);
+    var ringMat = new THREE.LineBasicMaterial({ color: 0xF1EAE0, transparent:true, opacity:0.12 });
+    tiltGroup.add(new THREE.LineLoop(ringGeo, ringMat));
+  });
+
+  /* static axes */
+  for (var i = 0; i < axisCount; i++){
+    var pts = [new THREE.Vector3(0,0,0), axisPoint(i, 100)];
+    var geo = new THREE.BufferGeometry().setFromPoints(pts);
+    var mat = new THREE.LineBasicMaterial({ color:0xF1EAE0, transparent:true, opacity:0.18 });
+    tiltGroup.add(new THREE.Line(geo, mat));
+  }
+
+  /* axis labels via canvas sprites */
+  DIMS.forEach(function(label, i){
+    var c = document.createElement('canvas');
+    c.width = 256; c.height = 64;
+    var ctx = c.getContext('2d');
+    ctx.font = '600 30px Courier Prime, monospace';
+    ctx.fillStyle = '#C9A227';
+    ctx.textAlign = 'center';
+    ctx.fillText(label.toUpperCase(), 128, 40);
+    var tex = new THREE.CanvasTexture(c);
+    var mat = new THREE.SpriteMaterial({ map: tex, transparent:true, opacity:0.85 });
+    var sprite = new THREE.Sprite(mat);
+    var p = axisPoint(i, 118);
+    sprite.position.set(p.x, p.y, 0.3);
+    sprite.scale.set(1.5, 0.38, 1);
+    tiltGroup.add(sprite);
+  });
+
+  /* dynamic polygon fill + outline */
+  var fillMat = new THREE.MeshBasicMaterial({ color:0xC9A227, transparent:true, opacity:0.28, side:THREE.DoubleSide });
+  var fillMesh = new THREE.Mesh(new THREE.BufferGeometry(), fillMat);
+  tiltGroup.add(fillMesh);
+
+  var outlineMat = new THREE.LineBasicMaterial({ color:0xC9A227, transparent:true, opacity:0.9 });
+  var outlineMesh = new THREE.LineLoop(new THREE.BufferGeometry(), outlineMat);
+  tiltGroup.add(outlineMesh);
+
+  updateRadar = function(values){
+    var outerPoints = [];
+    for (var i = 0; i < axisCount; i++){ outerPoints.push(axisPoint(i, values[i])); }
+
+    // fill: triangle fan from center
+    var positions = [0,0,0];
+    var indices = [];
+    outerPoints.forEach(function(p){ positions.push(p.x, p.y, p.z); });
+    for (var k = 1; k <= axisCount; k++){
+      var next = (k % axisCount) + 1;
+      indices.push(0, k, next);
+    }
+    var newFillGeo = new THREE.BufferGeometry();
+    newFillGeo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+    newFillGeo.setIndex(indices);
+    newFillGeo.computeVertexNormals();
+    fillMesh.geometry.dispose();
+    fillMesh.geometry = newFillGeo;
+
+    var newOutlineGeo = new THREE.BufferGeometry().setFromPoints(outerPoints);
+    outlineMesh.geometry.dispose();
+    outlineMesh.geometry = newOutlineGeo;
+  };
+  updateRadar(userProfile);
+
+  function animate(){
+    requestAnimationFrame(animate);
+    if (!prefersReduced){ scene.rotation.y += 0.0025; }
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  function handleResize(){
+    var w = stage.clientWidth, h = stage.clientHeight;
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    renderer.setSize(w, h);
+  }
+  window.addEventListener('resize', handleResize);
+})();
+</script>
+
+</body>
+</html>

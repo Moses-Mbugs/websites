@@ -1,0 +1,1525 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ascent — Reserve Your Floor</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700;800&family=Sora:wght@400;500;600;700&family=Roboto+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --paper: #F2F7F6;
+            --panel: #E6EFEC;
+            --ink: #0D1B22;
+            --sapphire: #123C7A;
+            --sapphire-deep: #0A2550;
+            --jade: #0FAE81;
+            --jade-soft: rgba(15, 174, 129, 0.15);
+            --steel: #8FA0AA;
+            --line: rgba(13, 27, 34, 0.12);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            background: var(--paper);
+            color: var(--ink);
+            font-family: 'Sora', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        .wrap {
+            max-width: 1320px;
+            margin: 0 auto;
+            padding: 0 48px;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Unbounded', sans-serif;
+            margin: 0;
+        }
+
+        .mono {
+            font-family: 'Roboto Mono', monospace;
+        }
+
+        .eyebrow {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 11.5px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--jade);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .eyebrow::before {
+            content: '';
+            width: 26px;
+            height: 1px;
+            background: var(--jade);
+        }
+
+        .eyebrow.muted {
+            color: var(--steel);
+        }
+
+        .eyebrow.muted::before {
+            background: var(--steel);
+        }
+
+        .eyebrow.on-dark {
+            color: var(--jade);
+        }
+
+        /* ---------- NAV ---------- */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 60;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px 48px;
+            transition: background 0.3s ease, padding 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .nav.scrolled {
+            background: rgba(242, 247, 246, 0.92);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 1px 0 var(--line);
+            padding: 16px 48px;
+        }
+
+        .logo {
+            font-family: 'Unbounded', sans-serif;
+            font-weight: 700;
+            font-size: 19px;
+            letter-spacing: -0.01em;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .logo .bar {
+            width: 5px;
+            height: 20px;
+            background: var(--jade);
+            display: inline-block;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            font-size: 13.5px;
+            font-weight: 500;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a:focus-visible {
+            opacity: 1;
+            outline: none;
+        }
+
+        .nav-cta {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 11.5px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            background: var(--sapphire-deep);
+            color: var(--paper);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 2px;
+            cursor: pointer;
+        }
+
+        .nav-cta:hover {
+            background: var(--jade);
+            color: var(--sapphire-deep);
+        }
+
+        /* ---------- FULL HERO ---------- */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 110px 0 48px;
+            overflow: hidden;
+        }
+
+        .hero-glow {
+            position: absolute;
+            top: -20%;
+            right: -10%;
+            width: 60vw;
+            height: 60vw;
+            max-width: 900px;
+            max-height: 900px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 45% 40%, rgba(15, 174, 129, 0.16), transparent 65%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .hero-glow.two {
+            top: auto;
+            bottom: -25%;
+            left: -15%;
+            right: auto;
+            background: radial-gradient(circle at 50% 50%, rgba(18, 60, 122, 0.14), transparent 65%);
+        }
+
+        .hero .wrap {
+            display: grid;
+            grid-template-columns: 0.95fr 1.15fr;
+            gap: 48px;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+            width: 100%;
+        }
+
+        .hero-copy h1 {
+            font-size: clamp(38px, 4.6vw, 68px);
+            line-height: 1.02;
+            font-weight: 700;
+            letter-spacing: -0.015em;
+            margin: 20px 0 22px;
+        }
+
+        .hero-copy h1 .accent {
+            color: var(--jade);
+        }
+
+        .hero-copy .sub {
+            font-size: 16px;
+            line-height: 1.65;
+            opacity: 0.68;
+            max-width: 440px;
+            margin-bottom: 30px;
+        }
+
+        .hero-ctas {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .btn {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 12px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 15px 26px;
+            border-radius: 2px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: transform 0.2s ease, filter 0.2s ease, background 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-solid {
+            background: var(--jade);
+            color: #04231A;
+        }
+
+        .btn-solid:hover {
+            filter: brightness(1.08);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border-color: var(--ink);
+            color: var(--ink);
+        }
+
+        .btn-outline:hover {
+            background: var(--ink);
+            color: var(--paper);
+        }
+
+        .avail-bar-wrap {
+            display: grid;
+            grid-template-columns: 150px 1fr 130px;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .avail-label {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 11.5px;
+            letter-spacing: 0.04em;
+            opacity: 0.65;
+        }
+
+        .avail-track {
+            height: 8px;
+            background: var(--panel);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .avail-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: 4px;
+            background: linear-gradient(90deg, var(--sapphire), var(--jade));
+            transition: width 1.4s cubic-bezier(.2, .8, .2, 1);
+        }
+
+        .avail-pct {
+            font-family: 'Unbounded', sans-serif;
+            font-size: 19px;
+            font-weight: 700;
+            text-align: right;
+        }
+
+        .avail-pct span {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 10px;
+            font-weight: 400;
+            display: block;
+            opacity: 0.55;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 3px;
+        }
+
+        /* ---------- TOWER STAGE (in hero) ---------- */
+        .tower-stage {
+            position: relative;
+            height: min(64vh, 640px);
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at 55% 25%, rgba(15, 174, 129, 0.10), transparent 55%),
+                linear-gradient(180deg, rgba(18, 60, 122, 0.05), transparent 40%);
+        }
+
+        #tower-canvas {
+            position: absolute;
+            inset: 0;
+            cursor: grab;
+        }
+
+        #tower-canvas.dragging {
+            cursor: grabbing;
+        }
+
+        .stage-hint {
+            position: absolute;
+            bottom: 14px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 10.5px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--ink);
+            opacity: 0.35;
+        }
+
+        .legend {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            z-index: 3;
+            display: flex;
+            gap: 14px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--ink);
+            opacity: 0.75;
+        }
+
+        .legend span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .legend i {
+            width: 9px;
+            height: 9px;
+            display: inline-block;
+            border-radius: 2px;
+        }
+
+        .hero-chip {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            z-index: 3;
+            background: rgba(242, 247, 246, 0.85);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            padding: 12px 16px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 220px;
+        }
+
+        .hero-chip .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        .hero-chip .chip-text b {
+            display: block;
+            font-family: 'Unbounded', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0;
+        }
+
+        .hero-chip .chip-text span {
+            opacity: 0.6;
+            font-size: 10.5px;
+        }
+
+        /* ---------- reveal ---------- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(26px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .reveal.in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ---------- SHARED SECTION ---------- */
+        section {
+            padding: 110px 0;
+        }
+
+        .section-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-bottom: 52px;
+        }
+
+        .section-head h2 {
+            font-size: clamp(28px, 3.2vw, 42px);
+            font-weight: 700;
+            margin-top: 14px;
+            max-width: 520px;
+            line-height: 1.08;
+        }
+
+        .section-head p {
+            max-width: 340px;
+            font-size: 14.5px;
+            opacity: 0.6;
+            line-height: 1.6;
+        }
+
+        /* ---------- EXPLORER (detail + full list) ---------- */
+        .explorer {
+            background: var(--sapphire-deep);
+            color: var(--paper);
+        }
+
+        .explorer .section-head p {
+            opacity: 0.55;
+        }
+
+        .explorer-grid {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .floor-panel {
+            background: rgba(242, 247, 246, 0.04);
+            border: 1px solid rgba(242, 247, 246, 0.12);
+            border-radius: 6px;
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
+            height: 560px;
+        }
+
+        .floor-detail {
+            border-bottom: 1px solid rgba(242, 247, 246, 0.14);
+            padding-bottom: 20px;
+            margin-bottom: 16px;
+        }
+
+        .floor-detail .fnum {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 11px;
+            color: var(--jade);
+            letter-spacing: 0.08em;
+        }
+
+        .floor-detail h3 {
+            font-family: 'Unbounded', sans-serif;
+            font-size: 26px;
+            font-weight: 700;
+            margin: 10px 0 6px;
+        }
+
+        .floor-detail .ftype {
+            font-size: 13.5px;
+            opacity: 0.65;
+            margin-bottom: 14px;
+        }
+
+        .floor-detail .fstats {
+            display: flex;
+            gap: 22px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            opacity: 0.75;
+        }
+
+        .floor-detail .fstats b {
+            display: block;
+            font-family: 'Unbounded', sans-serif;
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--paper);
+            text-transform: none;
+            letter-spacing: 0;
+            margin-top: 4px;
+        }
+
+        .floor-status {
+            display: inline-block;
+            margin-top: 14px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 10.5px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 6px 12px;
+            border-radius: 2px;
+        }
+
+        .status-available {
+            background: var(--jade-soft);
+            color: var(--jade);
+        }
+
+        .status-reserved {
+            background: rgba(143, 160, 170, 0.2);
+            color: var(--steel);
+        }
+
+        .status-sold {
+            background: rgba(242, 247, 246, 0.1);
+            color: rgba(242, 247, 246, 0.5);
+        }
+
+        .floor-list {
+            overflow-y: auto;
+            flex: 1;
+            display: flex;
+            flex-direction: column-reverse;
+            gap: 4px;
+            padding-right: 4px;
+        }
+
+        .floor-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 9px 12px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 12px;
+            transition: background 0.15s;
+        }
+
+        .floor-row:hover {
+            background: rgba(242, 247, 246, 0.06);
+        }
+
+        .floor-row.active {
+            background: rgba(15, 174, 129, 0.16);
+        }
+
+        .floor-row .frow-num {
+            opacity: 0.6;
+            width: 64px;
+        }
+
+        .floor-row .frow-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 2px;
+            margin-right: 10px;
+        }
+
+        .floor-row .frow-price {
+            opacity: 0.85;
+        }
+
+        .floor-cta {
+            margin-top: 16px;
+            background: var(--jade);
+            color: #04231A;
+            border: none;
+            padding: 14px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 12px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            transition: filter 0.2s;
+        }
+
+        .floor-cta:hover {
+            filter: brightness(1.1);
+        }
+
+        .floor-cta:disabled {
+            background: rgba(242, 247, 246, 0.14);
+            color: rgba(242, 247, 246, 0.4);
+            cursor: not-allowed;
+        }
+
+        /* ---------- FLOOR PLAN CARDS ---------- */
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .plan-card {
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            padding: 28px;
+        }
+
+        .plan-card .ptype {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--jade);
+        }
+
+        .plan-card h3 {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 14px 0 6px;
+        }
+
+        .plan-card .psub {
+            font-size: 13.5px;
+            opacity: 0.6;
+            margin-bottom: 20px;
+        }
+
+        .plan-diagram {
+            height: 140px;
+            border: 1px dashed var(--line);
+            border-radius: 4px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 11px;
+            opacity: 0.35;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .plan-stats {
+            display: flex;
+            justify-content: space-between;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            opacity: 0.7;
+            border-top: 1px solid var(--line);
+            padding-top: 16px;
+        }
+
+        .plan-stats b {
+            display: block;
+            font-family: 'Unbounded', sans-serif;
+            font-size: 16px;
+            color: var(--sapphire);
+            text-transform: none;
+            letter-spacing: 0;
+            margin-top: 4px;
+        }
+
+        /* ---------- AMENITIES ---------- */
+        .amenities-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+            border-top: 1px solid var(--line);
+            border-left: 1px solid var(--line);
+        }
+
+        .amenity {
+            padding: 32px 24px;
+            border-right: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .amenity svg {
+            width: 26px;
+            height: 26px;
+            margin-bottom: 18px;
+        }
+
+        .amenity h4 {
+            font-family: 'Unbounded', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .amenity p {
+            font-size: 13px;
+            opacity: 0.6;
+            line-height: 1.55;
+            margin: 0;
+        }
+
+        /* ---------- TIMELINE ---------- */
+        .timeline {
+            position: relative;
+            padding-top: 20px;
+        }
+
+        .timeline-track {
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .timeline-track::before {
+            content: '';
+            position: absolute;
+            top: 9px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--line);
+        }
+
+        .tl-item {
+            position: relative;
+            text-align: left;
+            width: 31%;
+        }
+
+        .tl-dot {
+            width: 19px;
+            height: 19px;
+            border-radius: 50%;
+            background: var(--paper);
+            border: 2px solid var(--steel);
+            margin-bottom: 22px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .tl-item.done .tl-dot {
+            background: var(--sapphire);
+            border-color: var(--sapphire);
+        }
+
+        .tl-item.current .tl-dot {
+            background: var(--jade);
+            border-color: var(--jade);
+            box-shadow: 0 0 0 5px var(--jade-soft);
+        }
+
+        .tl-item .tl-date {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            opacity: 0.55;
+        }
+
+        .tl-item h3 {
+            font-size: 19px;
+            font-weight: 700;
+            margin: 8px 0 8px;
+        }
+
+        .tl-item p {
+            font-size: 13.5px;
+            opacity: 0.62;
+            line-height: 1.55;
+            max-width: 260px;
+        }
+
+        /* ---------- CTA BANNER ---------- */
+        .cta-banner {
+            background: linear-gradient(120deg, var(--sapphire-deep), var(--sapphire));
+            color: var(--paper);
+            border-radius: 8px;
+            padding: 60px 56px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 36px;
+            flex-wrap: wrap;
+        }
+
+        .cta-banner h2 {
+            font-size: clamp(24px, 3vw, 34px);
+            font-weight: 700;
+            max-width: 420px;
+            line-height: 1.15;
+        }
+
+        .cta-form {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .cta-form input {
+            background: rgba(242, 247, 246, 0.08);
+            border: 1px solid rgba(242, 247, 246, 0.3);
+            color: var(--paper);
+            padding: 14px 18px;
+            border-radius: 3px;
+            font-family: 'Sora', sans-serif;
+            font-size: 14px;
+            min-width: 230px;
+            outline: none;
+        }
+
+        .cta-form input::placeholder {
+            color: rgba(242, 247, 246, 0.5);
+        }
+
+        .cta-form input:focus {
+            border-color: var(--jade);
+        }
+
+        .cta-form button {
+            background: var(--jade);
+            color: #04231A;
+            border: none;
+            padding: 0 24px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 12px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        /* ---------- FOOTER ---------- */
+        footer {
+            padding: 70px 0 36px;
+        }
+
+        .footer-top {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr 1fr 1fr;
+            gap: 40px;
+            padding-bottom: 48px;
+            border-bottom: 1px solid var(--line);
+            margin-bottom: 26px;
+        }
+
+        .footer-brand .logo {
+            margin-bottom: 16px;
+        }
+
+        .footer-brand p {
+            font-size: 13.5px;
+            opacity: 0.6;
+            max-width: 260px;
+            line-height: 1.6;
+        }
+
+        .footer-col h4 {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            opacity: 0.5;
+            margin-bottom: 16px;
+        }
+
+        .footer-col a {
+            display: block;
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 11px;
+            opacity: 0.72;
+        }
+
+        .footer-col a:hover {
+            opacity: 1;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12.5px;
+            opacity: 0.5;
+            font-family: 'Roboto Mono', monospace;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        @media (max-width: 980px) {
+            .wrap {
+                padding: 0 22px;
+            }
+
+            .nav {
+                padding: 18px 22px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                padding-top: 120px;
+            }
+
+            .hero .wrap {
+                grid-template-columns: 1fr;
+            }
+
+            .tower-stage {
+                height: 380px;
+                order: -1;
+            }
+
+            .avail-bar-wrap {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .avail-pct {
+                text-align: left;
+            }
+
+            .explorer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .floor-panel {
+                height: auto;
+            }
+
+            .floor-list {
+                max-height: 280px;
+            }
+
+            .plans-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .amenities-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .timeline-track {
+                flex-direction: column;
+                gap: 32px;
+            }
+
+            .timeline-track::before {
+                display: none;
+            }
+
+            .tl-item {
+                width: 100%;
+            }
+
+            .footer-top {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .cta-banner {
+                padding: 40px 26px;
+            }
+
+            .hero-chip {
+                max-width: 160px;
+                padding: 10px 12px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            .reveal {
+                transition: none;
+                opacity: 1;
+                transform: none;
+            }
+
+            .avail-fill {
+                transition: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="nav" id="siteNav">
+        <div class="logo"><span class="bar"></span>ASCENT</div>
+        <div class="nav-links">
+            <a href="#explorer">Explore floors</a>
+            <a href="#plans">Floor plans</a>
+            <a href="#amenities">Amenities</a>
+            <a href="#timeline">Construction</a>
+        </div>
+        <button class="nav-cta">Reserve a floor</button>
+    </nav>
+
+    <!-- ============ FULL HERO ============ -->
+    <section class="hero">
+        <div class="hero-glow"></div>
+        <div class="hero-glow two"></div>
+        <div class="wrap">
+            <div class="hero-copy">
+                <div class="eyebrow">Presale · 20-storey tower · Downtown</div>
+                <h1>Pick your <span class="accent">floor,</span><br>not just your unit.</h1>
+                <p class="sub">Ascent is sold floor-by-floor before the last beam goes up. Rotate the tower, click any
+                    level, and reserve it with a fully refundable deposit.</p>
+                <div class="hero-ctas">
+                    <button class="btn btn-solid"
+                        onclick="document.getElementById('explorer').scrollIntoView({behavior:'smooth'})">See full floor
+                        list</button>
+                    <button class="btn btn-outline">Download floor plans</button>
+                </div>
+                <div class="avail-bar-wrap">
+                    <div class="avail-label">Reservation progress</div>
+                    <div class="avail-track">
+                        <div class="avail-fill" id="availFill"></div>
+                    </div>
+                    <div class="avail-pct" id="availPct">—<span>Reserved or sold</span></div>
+                </div>
+            </div>
+
+            <div class="tower-stage">
+                <div class="legend">
+                    <span><i style="background:#0FAE81"></i>Available</span>
+                    <span><i style="background:#8FA0AA"></i>Reserved</span>
+                    <span><i style="background:rgba(13,27,34,0.25)"></i>Sold</span>
+                </div>
+                <div class="hero-chip" id="heroChip">
+                    <span class="dot" id="heroChipDot" style="background:#0FAE81"></span>
+                    <span class="chip-text"><b id="heroChipTitle">Floor —</b><span id="heroChipSub">Click a floor to
+                            inspect it</span></span>
+                </div>
+                <canvas id="tower-canvas"></canvas>
+                <div class="stage-hint">Drag to rotate · click a floor to select</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ EXPLORER (full detail + list) ============ -->
+    <section class="explorer" id="explorer">
+        <div class="wrap">
+            <div class="section-head reveal">
+                <div>
+                    <div class="eyebrow on-dark">Every floor, at a glance</div>
+                    <h2>Browse the full list, or go back up and drag the tower.</h2>
+                </div>
+                <p>Both views share the same live data — select a floor in either place and the other updates too.</p>
+            </div>
+
+            <div class="explorer-grid reveal">
+                <div class="floor-panel" style="height:auto;">
+                    <div class="floor-detail" id="floorDetailMain">
+                        <div class="fnum">FLOOR —</div>
+                        <h3>Select a floor</h3>
+                        <div class="ftype">Click a slab on the tower, or a row on the right</div>
+                        <div class="fstats">
+                            <div>Price<b>—</b></div>
+                            <div>Size<b>—</b></div>
+                        </div>
+                        <div class="floor-status" id="floorStatusTag">—</div>
+                    </div>
+                    <button class="floor-cta" id="floorCtaBtn" disabled>Select a floor first</button>
+                </div>
+
+                <div class="floor-panel">
+                    <div class="floor-list" id="floorList"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ FLOOR PLANS ============ -->
+    <section id="plans">
+        <div class="wrap">
+            <div class="section-head reveal">
+                <div>
+                    <div class="eyebrow">Layouts</div>
+                    <h2>Three layouts, one tower.</h2>
+                </div>
+                <p>Every unit type scales the same core plan — more of everything as you go up.</p>
+            </div>
+            <div class="plans-grid">
+                <div class="plan-card reveal">
+                    <div class="ptype">Floors 1–4</div>
+                    <h3>The Studio</h3>
+                    <p class="psub">Efficient one-room layout with a full-height window wall.</p>
+                    <div class="plan-diagram">Floor plan diagram</div>
+                    <div class="plan-stats">
+                        <div>From<b>$412K</b></div>
+                        <div>Size<b>480 sqft</b></div>
+                        <div>Layout<b>Studio</b></div>
+                    </div>
+                </div>
+                <div class="plan-card reveal">
+                    <div class="ptype">Floors 5–10</div>
+                    <h3>The One</h3>
+                    <p class="psub">A true one-bedroom with a separated sleeping space and deep balcony.</p>
+                    <div class="plan-diagram">Floor plan diagram</div>
+                    <div class="plan-stats">
+                        <div>From<b>$598K</b></div>
+                        <div>Size<b>640 sqft</b></div>
+                        <div>Layout<b>1 Bed</b></div>
+                    </div>
+                </div>
+                <div class="plan-card reveal">
+                    <div class="ptype">Floors 11–18</div>
+                    <h3>The Two</h3>
+                    <p class="psub">Corner-unit two-bedroom with dual exposure and a wraparound balcony.</p>
+                    <div class="plan-diagram">Floor plan diagram</div>
+                    <div class="plan-stats">
+                        <div>From<b>$874K</b></div>
+                        <div>Size<b>890 sqft</b></div>
+                        <div>Layout<b>2 Bed</b></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ AMENITIES ============ -->
+    <section id="amenities" style="padding-top:0;">
+        <div class="wrap">
+            <div class="section-head reveal">
+                <div>
+                    <div class="eyebrow">Building amenities</div>
+                    <h2>What comes with every floor.</h2>
+                </div>
+            </div>
+            <div class="amenities-grid reveal">
+                <div class="amenity">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#123C7A" stroke-width="1.6">
+                        <path d="M2 17c1.5 1.5 2.5 1.5 4 0s2.5-1.5 4 0 2.5 1.5 4 0 2.5-1.5 4 0 2.5 1.5 4 0" />
+                        <path d="M2 12c1.5 1.5 2.5 1.5 4 0s2.5-1.5 4 0 2.5 1.5 4 0 2.5-1.5 4 0 2.5 1.5 4 0" />
+                    </svg>
+                    <h4>Rooftop pool</h4>
+                    <p>Heated, open year-round, twenty storeys above the street.</p>
+                </div>
+                <div class="amenity">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#123C7A" stroke-width="1.6">
+                        <rect x="3" y="5" width="18" height="12" rx="1" />
+                        <path d="M9 20h6M12 17v3" />
+                    </svg>
+                    <h4>Co-working floor</h4>
+                    <p>Bookable desks and rooms on floor 2, included in every unit's fee.</p>
+                </div>
+                <div class="amenity">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#123C7A" stroke-width="1.6">
+                        <circle cx="12" cy="8" r="3.4" />
+                        <path d="M5 21c0-4 3.2-6.5 7-6.5s7 2.5 7 6.5" />
+                    </svg>
+                    <h4>24/7 concierge</h4>
+                    <p>Package handling, guest check-in, and building services on call.</p>
+                </div>
+                <div class="amenity">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#123C7A" stroke-width="1.6">
+                        <path d="M4 8h3M4 16h3M17 8h3M17 16h3" />
+                        <rect x="7" y="6" width="10" height="12" rx="1" />
+                    </svg>
+                    <h4>Fitness level</h4>
+                    <p>Full-floor gym with a private studio for classes and training.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ TIMELINE ============ -->
+    <section id="timeline">
+        <div class="wrap">
+            <div class="section-head reveal">
+                <div>
+                    <div class="eyebrow">Where things stand</div>
+                    <h2>Built in the open, floor by floor.</h2>
+                </div>
+                <p>The same public tracking we use for floor sales applies to construction.</p>
+            </div>
+            <div class="timeline reveal">
+                <div class="timeline-track">
+                    <div class="tl-item done">
+                        <div class="tl-dot"></div>
+                        <div class="tl-date">Q1 2026 · Complete</div>
+                        <h3>Groundbreaking</h3>
+                        <p>Site cleared, foundation poured, first steel ordered.</p>
+                    </div>
+                    <div class="tl-item current">
+                        <div class="tl-dot"></div>
+                        <div class="tl-date">Q4 2026 · In progress</div>
+                        <h3>Topping out</h3>
+                        <p>Floor 20's final beam goes up — the whole structure is standing.</p>
+                    </div>
+                    <div class="tl-item">
+                        <div class="tl-dot"></div>
+                        <div class="tl-date">Q3 2027 · Upcoming</div>
+                        <h3>Move-in</h3>
+                        <p>Interiors complete, inspections cleared, keys handed over.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ CTA ============ -->
+    <section>
+        <div class="wrap">
+            <div class="cta-banner reveal">
+                <h2>Get notified the moment a floor you're watching opens up.</h2>
+                <div class="cta-form">
+                    <input type="email" placeholder="you@email.com">
+                    <button>Notify me</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="wrap">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <div class="logo"><span class="bar"></span>ASCENT</div>
+                    <p>A 20-storey presale tower sold floor by floor, in full public view.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Building</h4>
+                    <a href="#explorer">Explore floors</a>
+                    <a href="#plans">Floor plans</a>
+                    <a href="#amenities">Amenities</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Company</h4>
+                    <a href="#">About the developer</a>
+                    <a href="#">Press</a>
+                    <a href="#">Careers</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <a href="#">Reservation terms</a>
+                    <a href="#">Privacy</a>
+                    <a href="#">Deposit policy</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>© 2026 Ascent Developments</span>
+                <span>Presale registration #A-20261</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        /* ---------------- NAV SCROLL STATE ---------------- */
+        var nav = document.getElementById('siteNav');
+        window.addEventListener('scroll', function () {
+            nav.classList.toggle('scrolled', window.scrollY > 40);
+        });
+
+        /* ---------------- SCROLL REVEAL ---------------- */
+        var revealEls = document.querySelectorAll('.reveal');
+        if ('IntersectionObserver' in window) {
+            var io = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('in');
+                        io.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.12 });
+            revealEls.forEach(function (el) { io.observe(el); });
+        } else {
+            revealEls.forEach(function (el) { el.classList.add('in'); });
+        }
+
+        /* ---------------- FLOOR DATA (single source of truth) ---------------- */
+        var STATUS_COLOR = { available: 0x0FAE81, reserved: 0x8FA0AA, sold: 0x0D1B22 };
+        var STATUS_LABEL = { available: 'Available', reserved: 'Reserved', sold: 'Sold' };
+
+        function buildFloors() {
+            var floors = [];
+            for (var i = 1; i <= 20; i++) {
+                var status, type, size;
+                if (i <= 4) { status = 'sold'; type = 'Studio'; size = 480; }
+                else if (i <= 10) { status = 'reserved'; type = '1 Bed'; size = 640; }
+                else if (i <= 18) { status = 'available'; type = '2 Bed'; size = 890; }
+                else { status = 'available'; type = 'Penthouse'; size = 1650; }
+                var price = Math.round((300000 + i * 21500) / 1000) * 1000;
+                floors.push({ num: i, status: status, type: type, size: size, price: price });
+            }
+            return floors;
+        }
+        var FLOORS = buildFloors();
+
+        /* ---------------- AVAILABILITY BAR ---------------- */
+        var takenCount = FLOORS.filter(function (f) { return f.status !== 'available'; }).length;
+        var pctTaken = Math.round((takenCount / FLOORS.length) * 100);
+        requestAnimationFrame(function () {
+            setTimeout(function () {
+                document.getElementById('availFill').style.width = pctTaken + '%';
+                document.getElementById('availPct').innerHTML = pctTaken + '%<span>Reserved or sold</span>';
+            }, 300);
+        });
+
+        /* ---------------- FLOOR LIST (HTML, synced with 3D + hero chip) ---------------- */
+        var floorListEl = document.getElementById('floorList');
+        var floorDetailMainEl = document.getElementById('floorDetailMain');
+        var floorStatusTagEl = document.getElementById('floorStatusTag');
+        var floorCtaBtn = document.getElementById('floorCtaBtn');
+        var heroChipTitle = document.getElementById('heroChipTitle');
+        var heroChipSub = document.getElementById('heroChipSub');
+        var heroChipDot = document.getElementById('heroChipDot');
+
+        function money(n) { return '$' + n.toLocaleString('en-US'); }
+        function hexColor(n) { return '#' + n.toString(16).padStart(6, '0'); }
+
+        FLOORS.forEach(function (f) {
+            var row = document.createElement('div');
+            row.className = 'floor-row';
+            row.dataset.floor = f.num;
+            row.innerHTML =
+                '<span style="display:flex;align-items:center;">' +
+                '<span class="frow-dot" style="background:' + hexColor(STATUS_COLOR[f.status]) + '"></span>' +
+                '<span class="frow-num">FL ' + f.num + '</span>' +
+                '</span>' +
+                '<span class="frow-price">' + money(f.price) + '</span>';
+            row.addEventListener('click', function () { selectFloor(f.num); });
+            floorListEl.appendChild(row);
+        });
+
+        var selectedFloor = null;
+        var onFloorSelected = null; // three.js hook
+
+        function selectFloor(num) {
+            selectedFloor = num;
+            var f = FLOORS.find(function (x) { return x.num === num; });
+            if (!f) return;
+
+            document.querySelectorAll('.floor-row').forEach(function (r) {
+                r.classList.toggle('active', parseInt(r.dataset.floor, 10) === num);
+            });
+
+            floorDetailMainEl.querySelector('.fnum').textContent = 'FLOOR ' + f.num;
+            floorDetailMainEl.querySelector('h3').textContent = f.type + ' · Floor ' + f.num;
+            floorDetailMainEl.querySelector('.ftype').textContent = f.size + ' sqft layout';
+            var stats = floorDetailMainEl.querySelectorAll('.fstats b');
+            stats[0].textContent = money(f.price);
+            stats[1].textContent = f.size + ' sqft';
+
+            floorStatusTagEl.textContent = STATUS_LABEL[f.status];
+            floorStatusTagEl.className = 'floor-status status-' + f.status;
+
+            if (f.status === 'available') {
+                floorCtaBtn.disabled = false;
+                floorCtaBtn.textContent = 'Reserve floor ' + f.num;
+            } else {
+                floorCtaBtn.disabled = true;
+                floorCtaBtn.textContent = STATUS_LABEL[f.status] + ' — not available';
+            }
+
+            heroChipTitle.textContent = 'Floor ' + f.num + ' · ' + money(f.price);
+            heroChipSub.textContent = f.type + ' · ' + STATUS_LABEL[f.status];
+            heroChipDot.style.background = hexColor(STATUS_COLOR[f.status]);
+
+            if (typeof onFloorSelected === 'function') onFloorSelected(num);
+
+            var activeRow = floorListEl.querySelector('.floor-row.active');
+            if (activeRow) activeRow.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        }
+
+        /* ---------------- THREE.JS TOWER ---------------- */
+        (function () {
+            var canvas = document.getElementById('tower-canvas');
+            var stage = canvas.parentElement;
+            var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            var scene = new THREE.Scene();
+            var camera = new THREE.PerspectiveCamera(40, stage.clientWidth / stage.clientHeight, 0.1, 100);
+            camera.position.set(6, 2.2, 8);
+            camera.lookAt(0, 0, 0);
+
+            var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.setSize(stage.clientWidth, stage.clientHeight);
+
+            var group = new THREE.Group();
+            scene.add(group);
+
+            var floorHeight = 0.34;
+            var gap = 0.05;
+            var floorMeshes = [];
+
+            FLOORS.forEach(function (f, idx) {
+                var geo = new THREE.BoxGeometry(2.6, floorHeight, 2.0);
+                var color = STATUS_COLOR[f.status];
+                var mat = new THREE.MeshBasicMaterial({ color: color, transparent: true, opacity: f.status === 'sold' ? 0.2 : 0.92 });
+                var mesh = new THREE.Mesh(geo, mat);
+                mesh.position.y = idx * (floorHeight + gap) - 3.2;
+                mesh.userData = { floorNum: f.num, baseColor: color, baseOpacity: mat.opacity };
+
+                var edges = new THREE.EdgesGeometry(geo);
+                var lineMat = new THREE.LineBasicMaterial({ color: 0x0D1B22, transparent: true, opacity: 0.18 });
+                var wire = new THREE.LineSegments(edges, lineMat);
+                mesh.add(wire);
+
+                floorMeshes.push(mesh);
+                group.add(mesh);
+            });
+
+            function highlightFloor(num) {
+                floorMeshes.forEach(function (mesh) {
+                    var isSel = mesh.userData.floorNum === num;
+                    mesh.scale.x = isSel ? 1.08 : 1;
+                    mesh.scale.z = isSel ? 1.08 : 1;
+                    mesh.material.opacity = isSel ? 1 : mesh.userData.baseOpacity;
+                });
+            }
+            onFloorSelected = highlightFloor;
+
+            /* drag to rotate + click to select */
+            var isDragging = false, lastX = 0, lastY = 0, moved = 0, manualVel = 0;
+            var autoRotate = 0.0016;
+
+            function toNDC(clientX, clientY) {
+                var rect = canvas.getBoundingClientRect();
+                return {
+                    x: ((clientX - rect.left) / rect.width) * 2 - 1,
+                    y: -((clientY - rect.top) / rect.height) * 2 + 1
+                };
+            }
+
+            var raycaster = new THREE.Raycaster();
+
+            function down(x, y) {
+                isDragging = true; lastX = x; lastY = y; moved = 0;
+                canvas.classList.add('dragging');
+            }
+            function move(x, y) {
+                if (!isDragging) return;
+                var dx = x - lastX;
+                moved += Math.abs(dx) + Math.abs(y - lastY);
+                lastX = x; lastY = y;
+                manualVel = dx * 0.006;
+                group.rotation.y += manualVel;
+            }
+            function up(x, y) {
+                isDragging = false;
+                canvas.classList.remove('dragging');
+                if (moved < 6) {
+                    var ndc = toNDC(x, y);
+                    raycaster.setFromCamera(ndc, camera);
+                    var hits = raycaster.intersectObjects(floorMeshes);
+                    if (hits.length) {
+                        selectFloor(hits[0].object.userData.floorNum);
+                    }
+                }
+            }
+
+            canvas.addEventListener('mousedown', function (e) { down(e.clientX, e.clientY); });
+            window.addEventListener('mousemove', function (e) { move(e.clientX, e.clientY); });
+            window.addEventListener('mouseup', function (e) { if (isDragging) up(e.clientX, e.clientY); });
+
+            canvas.addEventListener('touchstart', function (e) { var t = e.touches[0]; down(t.clientX, t.clientY); }, { passive: true });
+            canvas.addEventListener('touchmove', function (e) { var t = e.touches[0]; move(t.clientX, t.clientY); }, { passive: true });
+            canvas.addEventListener('touchend', function (e) { var t = e.changedTouches[0]; up(t.clientX, t.clientY); });
+
+            function animate() {
+                requestAnimationFrame(animate);
+                if (!isDragging && !prefersReduced) {
+                    manualVel *= 0.92;
+                    group.rotation.y += autoRotate + manualVel;
+                }
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            function handleResize() {
+                var w = stage.clientWidth, h = stage.clientHeight;
+                camera.aspect = w / h;
+                camera.updateProjectionMatrix();
+                renderer.setSize(w, h);
+            }
+            window.addEventListener('resize', handleResize);
+
+            /* default selection so nothing is empty on load */
+            selectFloor(15);
+        })();
+    </script>
+
+</body>
+
+</html>
